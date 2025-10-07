@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    internal class MemberShip : BaseEntity
+    public class MemberShip : BaseEntity
     {
         // Membership StartDate == CreatedAt from BaseEntity
 

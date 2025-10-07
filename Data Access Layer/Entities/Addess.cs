@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Data_Access_Layer.Entities
 {
     [Owned]
-    internal class Addess
+    public class Addess
     {
 
 

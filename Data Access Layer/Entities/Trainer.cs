@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    internal class Trainer : GymUser
+    public class Trainer : GymUser
     {
         // HireDate == CreatedAt from BaseEntity
         public Specialities Specialities { get; set; }

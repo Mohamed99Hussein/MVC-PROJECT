@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    internal abstract class GymUser : BaseEntity
+    public abstract class GymUser : BaseEntity
     {
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;

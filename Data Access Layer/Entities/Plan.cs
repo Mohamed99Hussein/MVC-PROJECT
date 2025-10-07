@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    internal class Plan : BaseEntity
+    public class Plan : BaseEntity
     {
 
         public string Name { get; set; } = null!;

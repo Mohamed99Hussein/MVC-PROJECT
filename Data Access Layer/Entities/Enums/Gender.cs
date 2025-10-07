@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities.Enums
 {
-    internal enum Gender
+    public enum Gender
     {
 
         Male =1,

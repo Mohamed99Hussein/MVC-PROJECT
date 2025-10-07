@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Data_Access_Layer.Entities
 {
     // 1-1 relationship with Member [Shared p.k ]
-    internal class HealthRecord : BaseEntity
+    public class HealthRecord : BaseEntity
     {
         // Lastupdate == UpdatedAt from BaseEntity
         public decimal Weight { get; set; } // in kg

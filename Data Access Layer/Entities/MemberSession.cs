@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    internal class MemberSession : BaseEntity
+    public class MemberSession : BaseEntity
     {
         // BookingDate == CreatedAt from BaseEntity
         #region Member - MemberSession

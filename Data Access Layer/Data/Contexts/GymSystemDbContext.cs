@@ -9,13 +9,18 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Data.Contexts
 {
-    internal class GymSystemDBContext : DbContext
+    public class GymSystemDBContext : DbContext
     {
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public GymSystemDBContext(DbContextOptions<GymSystemDBContext> options) : base(options)
         {
-           optionsBuilder.UseSqlServer("Server=.;Database=GymSystemDB;Trusted_Connection=True;TrustServerCertificate=True;");
+
         }
+        
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //   optionsBuilder.UseSqlServer("Server=.;Database=GymSystemDB;Trusted_Connection=True;TrustServerCertificate=True;");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

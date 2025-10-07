@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    internal abstract class BaseEntity
+    public abstract class BaseEntity
     {
 
         public int Id { get; set; } 
