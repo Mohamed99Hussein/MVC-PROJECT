@@ -20,6 +20,49 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             
         }
 
+        public bool CreateMember(CreateMemberViewModel CreateMember)
+        {
+            try
+            {
+                var EmailExists = memberRepository.GetAll(x => x.Email == CreateMember.Email);
+                var PhonesExists = memberRepository.GetAll(x => x.Phone == CreateMember.Phone);
+
+                if (EmailExists.Any() && PhonesExists.Any()) return false;
+
+                var Member = new Member()
+                {
+                    Email = CreateMember.Email,
+                    Phone = CreateMember.Phone,
+                    Gender = CreateMember.Gender,
+                    DateOfBirth = CreateMember.DateOfBirth,
+                    Address = new Addess
+                    {
+                        BuildingNumber = CreateMember.BuildingNumber,
+                        Street = CreateMember.Street,
+                        City = CreateMember.City,
+                    },
+                    HealthRecord = new HealthRecord
+                    {
+                        Height = CreateMember.HealthRecordViewModel.Height,
+                        Weight = CreateMember.HealthRecordViewModel.weight,
+                        BloodType = CreateMember.HealthRecordViewModel.BloodType,
+                        Note = CreateMember.HealthRecordViewModel.Note,
+                    }
+
+                };
+
+                return memberRepository.Add(Member) > 0;
+            }
+
+            catch (Exception)
+            {
+                Console.WriteLine("Sorry, I can't Add Member");
+                return false; 
+            }
+
+
+        }     
+
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
             var Members = memberRepository.GetAll();
