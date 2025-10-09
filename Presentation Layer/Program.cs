@@ -1,4 +1,6 @@
 using Data_Access_Layer.Data.Contexts;
+using Data_Access_Layer.Repositories.Classes;
+using Data_Access_Layer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Presentation_Layer
@@ -15,6 +17,7 @@ namespace Presentation_Layer
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped(typeof(IgenericRepository<>),typeof(GenericRepository<>));
 
             var app = builder.Build();
 

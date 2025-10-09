@@ -10,9 +10,9 @@ namespace Data_Access_Layer.Repositories.Interfaces
     // By enforcing these constraints, you can ensure that class
     //  not abstracted like (BaseEntity-GymUser).
 
-    internal interface IgenericRepository<TEntity> where TEntity : class , new()
+    public interface IgenericRepository<TEntity> where TEntity : class , new()
     {
-        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> GetAll(Func<TEntity,bool>? condition = null);
         TEntity? GetById(int id);
         int Add(TEntity entity);
         int Update(TEntity entity);
