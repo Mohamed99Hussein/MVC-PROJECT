@@ -16,5 +16,7 @@ namespace Business_Logic_Layer.Services.MemberService.Interfaces
 
         MemberViewModel? GetMemberDetails(int MemberId);
 
+        HealthRecordViewModel? GetHealthRecord(int MemberId);
+
     }
 }
