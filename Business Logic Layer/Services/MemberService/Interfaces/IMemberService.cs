@@ -23,5 +23,7 @@ namespace Business_Logic_Layer.Services.MemberService.Interfaces
 
         bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember);
 
+        bool RemoveMember(int MemberId);
+
     }
 }
