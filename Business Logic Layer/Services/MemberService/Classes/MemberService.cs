@@ -13,11 +13,16 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
     internal class MemberService : IMemberService
     {
         private readonly IgenericRepository<Member> memberRepository;
+        private readonly IgenericRepository<MemberShip> memberShipRepository;
+        private readonly IPlanRepository planRepository;
 
-        public MemberService(IgenericRepository<Member> memberRepository)
+        public MemberService(IgenericRepository<Member> memberRepository,
+            IgenericRepository<MemberShip> memberShipRepository,
+            IPlanRepository planRepository)
         {
             this.memberRepository = memberRepository;
-            
+            this.memberShipRepository = memberShipRepository;
+            this.planRepository = planRepository;
         }
 
         public bool CreateMember(CreateMemberViewModel CreateMember)
@@ -105,5 +110,45 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             return MemberViewModels;
 
         }
+
+        public MemberViewModel? GetMemberDetails(int MemberId)
+        {
+            var Member = memberRepository.GetById(MemberId);
+
+            if(Member is not null)
+
+           {
+                var memberViewModel = new MemberViewModel
+                {
+                    Name = Member.Name,
+                    Phone = Member.Phone,
+                    Email = Member.Email,
+                    Gender = Member.Gender.ToString(),
+                    Photo = Member.Photo,
+                    DateOfBirth = Member.DateOfBirth.ToShortDateString(),
+                };
+
+                var MemberShipActive = memberShipRepository.GetAll(x => x.Id == MemberId&& x.Status=="Active")
+                    .FirstOrDefault();
+                
+                if (MemberShipActive != null)
+                {
+                    memberViewModel.MemberShipStartDate = MemberShipActive.CreatedAt.ToShortDateString();
+                    memberViewModel.MemberShipEndDate = MemberShipActive.EndDate.ToShortDateString();
+                    var Plan = planRepository.GetPlan(MemberShipActive.PlanId);
+                    memberViewModel.PlanName = Plan?.Name;
+                }
+
+                return memberViewModel;
+            }
+
+            return null;
+
+
+            
+
+        }
+
+
     }
 }

@@ -14,5 +14,7 @@ namespace Business_Logic_Layer.Services.MemberService.Interfaces
 
         bool CreateMember(CreateMemberViewModel CreateMember);
 
+        MemberViewModel? GetMemberDetails(int MemberId);
+
     }
 }
