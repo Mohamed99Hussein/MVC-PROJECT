@@ -59,6 +59,7 @@ namespace Data_Access_Layer.Repositories.Classes
                 context.Set<TEntity>().Update(entity);
                 
            return context.SaveChanges(); 
+               
 
         }
     }

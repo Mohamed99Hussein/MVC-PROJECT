@@ -23,6 +23,7 @@ namespace Business_Logic_Layer.ViewModels.MemberViewModels
         public string? MemberShipStartDate { get; set; } 
 
         public string? DateOfBirth { get; set; }
+
         public string? MemberShipEndDate { get; set; } 
 
 
