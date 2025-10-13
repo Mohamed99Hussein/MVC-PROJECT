@@ -12,7 +12,7 @@ namespace Business_Logic_Layer.Services.MemberService.Interfaces
     {
         IEnumerable<MemberViewModel> GetAllMembers();
 
-        bool CreateMember(CreateMemberViewModel CreateMember);
+      bool CreateMember(CreateMemberViewModel CreateMember);
 
         MemberViewModel? GetMemberDetails(int MemberId);
 
@@ -21,9 +21,9 @@ namespace Business_Logic_Layer.Services.MemberService.Interfaces
 
         MemberToUpdateViewModel? GetMemberToUpdate(int MemberId);
 
-        bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember);
+      bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember);
 
-        bool RemoveMember(int MemberId);
+      bool RemoveMember(int MemberId);
 
     }
 }

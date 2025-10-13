@@ -2,6 +2,7 @@
 using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Data_Access_Layer.Entities;
 using Data_Access_Layer.Repositories.Interfaces;
+using Data_Access_Layer.Unit_Of_Work.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +13,11 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 {
     internal class MemberService : IMemberService
     {
-        private readonly IgenericRepository<Member> memberRepository;
-        private readonly IgenericRepository<MemberShip> memberShipRepository;
-        private readonly IPlanRepository planRepository;
-        private readonly IgenericRepository<HealthRecord> healthRecordRepository;
-        private readonly IgenericRepository<MemberSession> memberSessionRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public MemberService(IgenericRepository<Member> memberRepository,
-            IgenericRepository<MemberShip> memberShipRepository,
-            IPlanRepository planRepository,
-            IgenericRepository<HealthRecord> healthRecordRepository,
-            IgenericRepository<MemberSession> memberSessionRepository)
+        public MemberService(IUnitOfWork unitOfWork )
         {
-            this.memberRepository = memberRepository;
-            this.memberShipRepository = memberShipRepository;
-            this.planRepository = planRepository;
-            this.healthRecordRepository = healthRecordRepository;
-            this.memberSessionRepository = memberSessionRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public bool CreateMember(CreateMemberViewModel CreateMember)
@@ -61,7 +50,10 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
                 };
 
-                return memberRepository.Add(Member) > 0;
+                unitOfWork.GetRepository<Member>().Add(Member);
+                return unitOfWork.SaveChanges() > 0;
+
+                //return memberRepository.Add(Member) > 0;
             }
 
             catch (Exception)
@@ -75,7 +67,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
-            var Members = memberRepository.GetAll();
+            var Members = unitOfWork.GetRepository<Member>().GetAll();
 
                 if(!Members.Any() || Members is null) 
                  return Enumerable.Empty<MemberViewModel>(); // []
@@ -119,7 +111,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
         public HealthRecordViewModel? GetHealthRecord(int MemberId)
         {
            
-            var HealthRecord = healthRecordRepository.GetById(MemberId);
+            var HealthRecord = unitOfWork.GetRepository<HealthRecord>().GetById(MemberId);
             if (HealthRecord == null) return null;
 
             return new HealthRecordViewModel()   
@@ -136,7 +128,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
         public MemberViewModel? GetMemberDetails(int MemberId)
         {
-            var Member = memberRepository.GetById(MemberId);
+            var Member = unitOfWork.GetRepository<Member>().GetById(MemberId);
 
             if(Member is not null)
 
@@ -151,7 +143,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
                     DateOfBirth = Member.DateOfBirth.ToShortDateString(),
                 };
 
-                var MemberShipActive = memberShipRepository.GetAll(x => x.Id == MemberId&& x.Status=="Active")
+                var MemberShipActive = unitOfWork.GetRepository<MemberShip>().GetAll(x => x.Id == MemberId&& x.Status=="Active")
                     .FirstOrDefault();
                 
                 if (MemberShipActive != null)
@@ -174,7 +166,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
         public MemberToUpdateViewModel? GetMemberToUpdate(int MemberId)
         {
-            var TargetMember = memberRepository.GetById(MemberId);
+            var TargetMember = unitOfWork.GetRepository<Member>().GetById(MemberId);
 
             if (TargetMember is  null) return null;
 
@@ -193,16 +185,16 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
         public bool RemoveMember(int MemberId)
         {
-            var member = memberRepository.GetById(MemberId);
+            var member = unitOfWork.GetRepository<Member>().GetById(MemberId);
              if (member is null) return false;
 
             // Don't remove that has Active MemberShip
 
-            var HasActiveMemberSessions = memberSessionRepository.GetAll(x=>x.MemberId == MemberId
+            var HasActiveMemberSessions = unitOfWork.GetRepository<MemberSession>().GetAll(x=>x.MemberId == MemberId
             && x.Session.StartTime < DateTime.Now).Any();
             if (HasActiveMemberSessions) return false;
 
-            var DeletedMemberShips = memberShipRepository.GetAll(x=>x.MemberId== MemberId);
+            var DeletedMemberShips = unitOfWork.GetRepository<MemberShip>().GetAll(x=>x.MemberId== MemberId);
 
             try
             {
@@ -210,11 +202,12 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
                 {
                     foreach (var DeletedMemberShip in DeletedMemberShips)
                     {
-                        memberShipRepository.Delete(DeletedMemberShip);
+                        unitOfWork.GetRepository<MemberShip>().Delete(DeletedMemberShip);
 
                     }
                 }
-                return memberRepository.Delete(member) > 0;
+                unitOfWork.GetRepository<Member>().Delete(member);
+                return unitOfWork.SaveChanges() > 0;
             }
             catch (Exception)
             {
@@ -228,7 +221,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             if (CheckEmail(UpdatedMember.Email) || CheckPhone(UpdatedMember.Phone))
                                     return false;
 
-            var member = memberRepository.GetById(MemberId);
+            var member = unitOfWork.GetRepository<Member>().GetById(MemberId);
 
             if (member is null) return false;
 
@@ -239,18 +232,19 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             member.Address.Street = UpdatedMember.Street;
             member.UpdatedAt = DateTime.Now;
 
-            return memberRepository.Update(member) > 0;
+             unitOfWork.GetRepository<Member>().Update(member) ;
+            return unitOfWork.SaveChanges() > 0;
 
         }
 
         private bool CheckEmail(string email)
         {
-            return memberRepository.GetAll(X => X.Email== email).Any();
+            return unitOfWork.GetRepository<Member>().GetAll(X => X.Email== email).Any();
         }
 
         private bool CheckPhone(string phone)
         {
-            return memberRepository.GetAll(X => X.Phone == phone).Any();
+            return unitOfWork.GetRepository<Member>().GetAll(X => X.Phone == phone).Any();
         }
 
     }

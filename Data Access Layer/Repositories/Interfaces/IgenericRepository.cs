@@ -14,9 +14,9 @@ namespace Data_Access_Layer.Repositories.Interfaces
     {
         IEnumerable<TEntity> GetAll(Func<TEntity,bool>? condition = null);
         TEntity? GetById(int id);
-        int Add(TEntity entity);
-        int Update(TEntity entity);
-        int Delete(TEntity entity);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
 
     }
 }
