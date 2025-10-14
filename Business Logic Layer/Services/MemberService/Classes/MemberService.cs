@@ -14,10 +14,12 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
     internal class MemberService : IMemberService
     {
         private readonly IUnitOfWork unitOfWork;
+       
 
-        public MemberService(IUnitOfWork unitOfWork )
+        public MemberService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+            
         }
 
         public bool CreateMember(CreateMemberViewModel CreateMember)
@@ -150,7 +152,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
                 {
                     memberViewModel.MemberShipStartDate = MemberShipActive.CreatedAt.ToShortDateString();
                     memberViewModel.MemberShipEndDate = MemberShipActive.EndDate.ToShortDateString();
-                    var Plan = planRepository.GetPlan(MemberShipActive.PlanId);
+                    var Plan =unitOfWork.GetRepository<Plan>().GetById(MemberShipActive.PlanId);
                     memberViewModel.PlanName = Plan?.Name;
                 }
 
