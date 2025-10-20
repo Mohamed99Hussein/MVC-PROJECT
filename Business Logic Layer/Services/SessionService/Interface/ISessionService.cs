@@ -1,5 +1,6 @@
 ﻿using Business_Logic_Layer.ViewModels.SessionViewModels;
 using Data_Access_Layer.Unit_Of_Work.Interface;
+using GymManagementSystemBLL.ViewModels.SessionViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace Business_Logic_Layer.Services.SessionService.Interface
         IEnumerable<SessionViewModel> GetAllSessions();
 
         SessionViewModel? GetSessionById(int SessionId);
+
+        bool CreateSession(CreateSessionViewModel createdSessionViewModel);
+
+        UpdateSessionViewModel? GetSessionForUpdate(int SessionId);
+
+        bool UpdateSession(int SessionId, UpdateSessionViewModel updatedSessionViewModel);
 
 
     }

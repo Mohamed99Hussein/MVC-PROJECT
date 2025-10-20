@@ -25,7 +25,7 @@ namespace Business_Logic_Layer.ViewModels.SessionViewModels
         #region Computed Columns
 
         public string DisplayedDate => $"{StartDate:MMM,dd,yyyy}";
-        
+
         public string DisplayedTime => $"{StartDate:hh:mm tt} - {EndDate:hh:mm tt}";
 
         public TimeSpan Duration => EndDate - StartDate;

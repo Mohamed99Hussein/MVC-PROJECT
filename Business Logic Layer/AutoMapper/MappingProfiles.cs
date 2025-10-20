@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business_Logic_Layer.ViewModels.SessionViewModels;
 using Data_Access_Layer.Entities;
+using GymManagementSystemBLL.ViewModels.SessionViewModels;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,39 @@ namespace Business_Logic_Layer.AutoMapper
                 .ForMember(SVM => SVM.AvailableSlots, Options => Options.Ignore());
 
             #endregion
-        
-        
+
+            #region CreatedSessionViewModel-Session
+
+            CreateMap<CreateSessionViewModel, Session>()
+                .ForMember(S => S.StartTime,
+                Options => Options.MapFrom(CSVM => CSVM.StartDate))
+                .ForMember(S => S.EndTime,
+                Options => Options.MapFrom(CSVM => CSVM.EndDate));
+
+            #endregion
+
+            #region Session - UpdateSessionViewModel
+
+            CreateMap<Session, UpdateSessionViewModel>()
+                .ForMember(USVM => USVM.StartDate,
+                Options => Options.MapFrom(S => S.StartTime))
+                .ForMember(USVM => USVM.EndDate,
+                Options => Options.MapFrom(S => S.EndTime));
+
+
+            #endregion
+
+            #region UpdateSessionViewModel - Session
+
+            CreateMap<UpdateSessionViewModel, Session>()
+                .ForMember(S => S.StartTime,
+                Options => Options.MapFrom(USVM => USVM.StartDate))
+                .ForMember(S => S.EndTime,
+                Options => Options.MapFrom(USVM => USVM.EndDate));
+
+            #endregion
         }
 
 
-        }
+    }
 }

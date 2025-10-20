@@ -15,6 +15,8 @@ namespace Data_Access_Layer.Repositories.Interfaces
 
       public Session? GetSessionWithCategoryAndTrainerById(int sessionId);
 
+       
+
 
     }
 }
