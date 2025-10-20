@@ -21,6 +21,8 @@ namespace Business_Logic_Layer.Services.SessionService.Interface
 
         bool UpdateSession(int SessionId, UpdateSessionViewModel updatedSessionViewModel);
 
+        bool DeleteSession(int SessionId);
+        
 
     }
 }

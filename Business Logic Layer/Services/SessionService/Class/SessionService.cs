@@ -102,7 +102,15 @@ namespace Business_Logic_Layer.Services.SessionService.Class
             return mappedSession;
         }
 
+        public bool DeleteSession(int SessionId)
+        {
+            var session = unitOfWork.GetRepository<Session>().GetById(SessionId);
+            // check if session is available for deleting
+            if (!IsSessionAvailableForDeleting(session!)) return false;
 
+            unitOfWork.GetRepository<Session>().Delete(session!);
+                    return unitOfWork.SaveChanges() > 0;
+        }
 
         #region Private Helper Methods
 
@@ -137,8 +145,22 @@ namespace Business_Logic_Layer.Services.SessionService.Class
             return startDate < endDate;
         }
 
-     
+        private bool IsSessionAvailableForDeleting(Session session)
+        {
+            if (session is null) return false;
 
+            if (unitOfWork.sessionRepository.GetCountOfBookings(session.Id) > 0) return false;
+
+            if (session.StartTime <= DateTime.Now) return false;
+
+            if (session.EndTime <= DateTime.Now) return false;
+
+            if(session.StartTime>=DateTime.Now && session.EndTime>=DateTime.Now) return false;
+
+                return true;
+
+
+        }
 
 
         #endregion
