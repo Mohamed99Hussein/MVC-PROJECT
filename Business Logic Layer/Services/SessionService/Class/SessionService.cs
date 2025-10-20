@@ -1,4 +1,5 @@
-﻿using Business_Logic_Layer.Services.SessionService.Interface;
+﻿using AutoMapper;
+using Business_Logic_Layer.Services.SessionService.Interface;
 using Business_Logic_Layer.ViewModels.SessionViewModels;
 using Data_Access_Layer.Entities;
 using Data_Access_Layer.Unit_Of_Work.Interface;
@@ -13,10 +14,12 @@ namespace Business_Logic_Layer.Services.SessionService.Class
     public class SessionService : ISessionService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public SessionService(IUnitOfWork unitOfWork)
+        public SessionService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public IEnumerable<SessionViewModel> GetAllSessions()
@@ -25,20 +28,28 @@ namespace Business_Logic_Layer.Services.SessionService.Class
 
             if (Sessions == null || !Sessions.Any()) return [];
 
-            return Sessions.Select(session => new SessionViewModel
+            var MappedSessions = mapper.Map<IEnumerable<Session>,IEnumerable<SessionViewModel>>(Sessions);
+            
+            foreach (var session in MappedSessions)
             {
-                Id = session.Id,
-                Description = session.Description,
-                StartDate = session.StartTime,
-                EndDate = session.EndTime,
-                Capacity = session.Capacity,
-                CategoryName = session.Category.CategoryName,
-                TrainerName = session.SessionTrainer.Name,
-                AvailableSlots = session.Capacity - unitOfWork.sessionRepository.GetCountOfBookings(session.Id)
+                session.AvailableSlots = session.Capacity - unitOfWork.sessionRepository.GetCountOfBookings(session.Id);
+            }
 
-            });
+            return MappedSessions;
 
 
+        }
+
+        public SessionViewModel? GetSessionById(int SessionId)
+        {
+            var session = unitOfWork.sessionRepository.GetSessionWithCategoryAndTrainerById(SessionId);
+            if (session == null) return null;
+
+           var MappedSession = mapper.Map<Session,SessionViewModel>(session);
+            
+           MappedSession.AvailableSlots = session.Capacity - unitOfWork.sessionRepository.GetCountOfBookings(session.Id);
+            
+            return MappedSession;
         }
     }
 }

@@ -11,7 +11,9 @@ namespace Business_Logic_Layer.Services.SessionService.Interface
     public interface ISessionService 
     {
         IEnumerable<SessionViewModel> GetAllSessions();
-       
+
+        SessionViewModel? GetSessionById(int SessionId);
+
 
     }
 }
