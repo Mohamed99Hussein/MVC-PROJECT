@@ -10,7 +10,7 @@ namespace Data_Access_Layer.Unit_Of_Work.Interface
 {
     public interface IUnitOfWork
     {
-
+        public ISessionRepository sessionRepository { get;}
 
 
         IgenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new();
