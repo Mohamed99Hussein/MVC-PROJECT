@@ -1,32 +1,31 @@
-using System.Diagnostics;
+﻿using Business_Logic_Layer.Services.AnalyticsService.Class;
+using Business_Logic_Layer.Services.AnalyticsService.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Presentation_Layer.Models;
 
 namespace Presentation_Layer.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IAnalyticsService analyticsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IAnalyticsService analyticsService)
         {
-            _logger = logger;
+            this.analyticsService = analyticsService;
         }
 
+        //[NonAction] // This method is not an action method and cannot be invoked via HTTP requests
         public IActionResult Index()
         {
-            return View();
-        }
+        //return View() // Returns the default view for the Index action
+        //return View(model) //  Returns the default view for the Index action with a model
+        //return View("hamada") // Returns the specific view "hamada" 
+        //return View("hamada",model) // Returns the specific view "hamada" with a model 
+            
+            var Data = analyticsService.GetAnalyticsData();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(Data);
+        
         }
     }
 }
