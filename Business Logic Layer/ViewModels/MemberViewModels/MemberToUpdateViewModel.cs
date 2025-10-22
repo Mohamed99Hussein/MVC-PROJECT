@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.ViewModels.MemberViewModels
 {
-    internal class MemberToUpdateViewModel
+    public class MemberToUpdateViewModel
     {
         [Display]
         [Required(ErrorMessage = "Name is Required")]

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services.MemberService.Classes
 {
-    internal class MemberService : IMemberService
+    public class MemberService : IMemberService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
