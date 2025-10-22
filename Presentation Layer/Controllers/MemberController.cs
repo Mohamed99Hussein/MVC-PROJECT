@@ -30,6 +30,16 @@ namespace Presentation_Layer.Controllers
             return View(MemberDetails);
 
         }
-        
+
+        public ActionResult HealthRecordDetails(int id)
+        {
+            if (id <= 0)
+                return View(nameof(Index));
+            var HealthRecordDetails = memberService.GetHealthRecord(id);
+            if (HealthRecordDetails is null)
+                return View(nameof(Index));
+            return View(HealthRecordDetails);
+        }
+
     }
 }
