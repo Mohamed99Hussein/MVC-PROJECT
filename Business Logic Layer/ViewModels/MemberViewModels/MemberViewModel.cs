@@ -26,6 +26,8 @@ namespace Business_Logic_Layer.ViewModels.MemberViewModels
 
         public string? MemberShipEndDate { get; set; } 
 
+        public string Address { get; set; } = null!;
+
 
 
 

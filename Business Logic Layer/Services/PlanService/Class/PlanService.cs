@@ -1,4 +1,5 @@
-﻿using Business_Logic_Layer.Services.PlanService.Interface;
+﻿using AutoMapper;
+using Business_Logic_Layer.Services.PlanService.Interface;
 using Business_Logic_Layer.ViewModels.PlanViewModels;
 using Data_Access_Layer.Entities;
 using Data_Access_Layer.Unit_Of_Work.Interface;
@@ -14,10 +15,12 @@ namespace Business_Logic_Layer.Services.PlanService.Class
     internal class PlanService : IPlanService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public PlanService(IUnitOfWork unitOfWork)
+        public PlanService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public IEnumerable<PlanViewModel> GetAllPlans()
@@ -26,23 +29,8 @@ namespace Business_Logic_Layer.Services.PlanService.Class
 
             if (Plans is null || !Plans.Any()) return [];
            
-            var planViewModels = new List<PlanViewModel>();
+            var planViewModels = mapper.Map<IEnumerable<PlanViewModel>>(Plans);
 
-            foreach (var Plan in Plans)
-            {
-
-                var planViewModel = new PlanViewModel()
-                {
-                    Id = Plan.Id,
-                    Name = Plan.Name,
-                    Description = Plan.Description,
-                    Price = Plan.Price,
-                    DurationDays = Plan.DurationDays,
-                    IsActive = Plan.IsActive,
-                };
-                planViewModels.Add(planViewModel);
-                
-            }
             return planViewModels;
 
         }
@@ -52,17 +40,12 @@ namespace Business_Logic_Layer.Services.PlanService.Class
             var Plan = unitOfWork.GetRepository<Plan>().GetById(PlanId);
             if (Plan is null) return null;
 
-            return new PlanViewModel()
-            {
-                Description = Plan.Description,
-                Price = Plan.Price,
-                DurationDays = Plan.DurationDays,
-                Name = Plan.Name,
-                Id = Plan.Id,
-                IsActive = Plan.IsActive,
+            var planViewModel = mapper.Map<PlanViewModel>(Plan);
 
-            };
-            
+            return planViewModel;
+
+
+
         }
 
         public PlanToUpdateViewModel? GetPlanToUpdate(int PlanId)
@@ -71,13 +54,31 @@ namespace Business_Logic_Layer.Services.PlanService.Class
              if (Plan is null || HasActiveMemberShip(PlanId) || Plan.IsActive == false)
                             return null;
 
-            return new PlanToUpdateViewModel()
-            {
-                Description = Plan.Description,
-                Price = Plan.Price,
-                DurationDays = Plan.DurationDays,
-                Name = Plan.Name,
-            };
+             var planToUpdateViewModel = mapper.Map<PlanToUpdateViewModel>(Plan);
+                return planToUpdateViewModel;
+
+        }
+
+        public bool UpdatePlan(int PlanId, PlanToUpdateViewModel UpdatedPlan)
+        {
+            var Plan = unitOfWork.GetRepository<Plan>().GetById(PlanId);
+              if (Plan is null || HasActiveMemberShip(PlanId))
+                return false;
+
+            //(Plan.Name, Plan.Description, Plan.Price, Plan.DurationDays, Plan.UpdatedAt) =
+            //    (
+            //      UpdatedPlan.Name,
+            //      UpdatedPlan.Description,
+            //      UpdatedPlan.Price,
+            //      UpdatedPlan.DurationDays,
+            //      DateTime.Now
+            //    ); // Tuple Syntax
+
+              var planToUpdateViewModel = mapper.Map<PlanToUpdateViewModel, Plan>(UpdatedPlan, Plan);
+                //planToUpdateViewModel.UpdatedAt = DateTime.Now;
+
+            unitOfWork.GetRepository<Plan>().Update(Plan);
+                    return unitOfWork.SaveChanges() > 0;
         }
 
         public bool TogglePlanStatus(int PlanId)
@@ -89,39 +90,18 @@ namespace Business_Logic_Layer.Services.PlanService.Class
             Plan.IsActive = !Plan.IsActive;
             Plan.UpdatedAt = DateTime.Now;
 
-          try
+            try
             {
                 unitOfWork.GetRepository<Plan>().Update(Plan);
                 return unitOfWork.SaveChanges() > 0;
             }
-            catch 
+            catch
             {
                 return false;
-            
+
             }
         }
-
-        public bool UpdatePlan(int PlanId, PlanToUpdateViewModel UpdatedPlan)
-        {
-            var Plan = unitOfWork.GetRepository<Plan>().GetById(PlanId);
-              if (Plan is null || HasActiveMemberShip(PlanId))
-                return false;
-
-            (Plan.Name, Plan.Description, Plan.Price, Plan.DurationDays, Plan.UpdatedAt) =
-                (
-                  UpdatedPlan.Name,
-                  UpdatedPlan.Description,
-                  UpdatedPlan.Price,
-                  UpdatedPlan.DurationDays,
-                  DateTime.Now
-                ); // Tuple Syntax
-    
-
-            unitOfWork.GetRepository<Plan>().Update(Plan);
-                    return unitOfWork.SaveChanges() > 0;
-        }
-
-
+        
         private bool HasActiveMemberShip(int PlanId)
         {
             var MemberShipStatus = unitOfWork.GetRepository<MemberShip>()
