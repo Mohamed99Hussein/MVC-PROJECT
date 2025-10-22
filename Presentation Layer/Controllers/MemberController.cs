@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation_Layer.Controllers
 {
-    public class MemeberController : Controller
+    public class MemberController : Controller
     {
         private readonly IMemberService memberService;
 
-        public MemeberController(IMemberService memberService)
+        public MemberController(IMemberService memberService)
         {
             this.memberService = memberService;
         }
