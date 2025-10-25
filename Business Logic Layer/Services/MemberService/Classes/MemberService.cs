@@ -40,9 +40,9 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
               
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Sorry, I can't Add Member");
+                Console.WriteLine($"Sorry, I can't Add Member, {ex}");
                 return false; 
             }
 
@@ -182,8 +182,15 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
         public bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember)     
         {
            
-            if (CheckEmail(UpdatedMember.Email) || CheckPhone(UpdatedMember.Phone))
-                                    return false;
+          var EmailExistCheck = unitOfWork.GetRepository<Member>()
+                .GetAll(x=>x.Email == UpdatedMember.Email && x.Id != MemberId);
+
+            var PhoneExistCheck = unitOfWork.GetRepository<Member>()
+               .GetAll(x => x.Phone == UpdatedMember.Phone && x.Id != MemberId);
+
+            if( EmailExistCheck.Any() || PhoneExistCheck.Any() )
+                return false;
+
 
             var member = unitOfWork.GetRepository<Member>().GetById(MemberId);
 

@@ -45,15 +45,7 @@ namespace Data_Access_Layer.Repositories.Classes
         public TEntity? GetById(int id) => context.Set<TEntity>().Find(id);
        
 
-        public void Update(TEntity entity)
-        {
-            var entry = context.Set<TEntity>().Find(entity);
-            if (entry is not null)
-                context.Set<TEntity>().Update(entity);
-                
-          
-               
+        public void Update(TEntity entity) => context.Set<TEntity>().Update(entity);
 
-        }
     }
 }

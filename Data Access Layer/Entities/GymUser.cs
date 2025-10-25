@@ -18,7 +18,7 @@ namespace Data_Access_Layer.Entities
 
         public Gender Gender { get; set; }
 
-        public Addess Address { get; set; } = null!;
+        public Address Address { get; set; } = null!;
 
 
 

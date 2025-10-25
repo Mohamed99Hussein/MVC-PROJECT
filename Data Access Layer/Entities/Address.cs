@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Data_Access_Layer.Entities
 {
     [Owned]
-    public class Addess
+    public class Address
     {
 
 

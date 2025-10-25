@@ -90,7 +90,50 @@ namespace Presentation_Layer.Controllers
 
         }
 
+        public ActionResult EditMember(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id, Can not be less than 1";
 
+                return RedirectToAction(nameof(Index));
+            }
+
+            var MemberToUpdate = memberService.GetMemberToUpdate(id);
+
+            if(MemberToUpdate is null)
+            {
+                TempData["ErrorMessage"] = "Member Not Found";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(MemberToUpdate);
+        }
+
+        [HttpPost]
+        public ActionResult EditMember([FromRoute]int id, MemberToUpdateViewModel EditMember)
+        {
+            if(!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Your Upfate isn't valid. Please try again.";
+                return View(EditMember);
+            }
+
+            var CheckUpdateResult = memberService.UpdateMemberDetails(id,EditMember);
+            if (CheckUpdateResult)
+            {
+                TempData["SuccessMessage"] = "Member Updated Successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Member Failed to be Updated.";
+            }
+
+            return RedirectToAction(nameof(Index));
+
+
+
+        }
 
 
     }
