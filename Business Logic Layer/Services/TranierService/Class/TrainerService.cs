@@ -127,7 +127,15 @@ namespace Business_Logic_Layer.Services.TranierService.Class
         public bool UpdateTrainer(int TrainerId, TrainerToUpdateViewModel UpdatedTrainer)
         {
             var Trainer = unitOfWork.GetRepository<Trainer>().GetById(TrainerId);
-            if (Trainer is null||CheckEmail(UpdatedTrainer.Email)||CheckPhone(UpdatedTrainer.Phone))
+
+            var EmailExist= unitOfWork.GetRepository<Trainer>()
+                .GetAll(x=>x.Email== UpdatedTrainer.Email &&x.Id != TrainerId ).Any();
+
+            var PhoneExist = unitOfWork.GetRepository<Trainer>()
+                .GetAll(x => x.Phone == UpdatedTrainer.Phone && x.Id != TrainerId).Any();
+
+
+            if (Trainer is null|| EmailExist || PhoneExist)
                  return false;
 
             //Trainer.Email = UpdatedTrainer.Email;
