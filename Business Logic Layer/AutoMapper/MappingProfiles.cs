@@ -181,7 +181,10 @@ namespace Business_Logic_Layer.AutoMapper
         {
 
             #region Trainer - TrainerViewModel
-            CreateMap<Trainer, TrainerViewModel>();
+            CreateMap<Trainer, TrainerViewModel>()
+                .ForMember(dest => dest.Address,
+                opt => opt.MapFrom(
+                    src => $"{src.Address.BuildingNumber} - {src.Address.Street} - {src.Address.City} "));
             #endregion
 
             #region CreateTrainerViewModel - Trainer
@@ -196,7 +199,6 @@ namespace Business_Logic_Layer.AutoMapper
                 .ForMember(t => t.CreatedAt,
                 Options => Options.MapFrom(CTV => DateTime.Now));
             #endregion
-
 
             #region Trainer - TrainerToUpdateViewModel  
 
