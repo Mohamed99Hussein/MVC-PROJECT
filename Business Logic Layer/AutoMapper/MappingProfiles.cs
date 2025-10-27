@@ -165,7 +165,7 @@ namespace Business_Logic_Layer.AutoMapper
             #endregion
 
             #region Plan - PlanToUpdateViewModel
-           CreateMap<Plan, PlanViewModel>();
+           CreateMap<Plan, PlanToUpdateViewModel>();
             #endregion
 
             #region PlanToUpdateViewModel - Plan
