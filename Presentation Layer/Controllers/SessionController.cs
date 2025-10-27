@@ -1,6 +1,8 @@
 ﻿using Business_Logic_Layer.Services.MemberService.Classes;
 using Business_Logic_Layer.Services.SessionService.Interface;
+using GymManagementSystemBLL.ViewModels.SessionViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Presentation_Layer.Controllers
 {
@@ -41,47 +43,87 @@ namespace Presentation_Layer.Controllers
         }
 
 
+        public ActionResult Create()
+        {
+            LoadDrop();
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult Create(CreateSessionViewModel createdSession)
+        {
+            if(!ModelState.IsValid)
+            {
+                LoadDrop();
+                return View(createdSession);    
 
+            }
 
+            var Result = sessionService.CreateSession(createdSession);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            if(Result)
+            {
+                TempData["SuccessMessage"] = "Session Created Successfully.";
+               return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Session Failed to create.";
+                LoadDrop();
+                return View(createdSession);
+            }
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void LoadDrop()
+        {
+            var categories = sessionService.GetAllCategoriesForDropDownList();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+
+            var trainers = sessionService.GetAllTrainersForDropDownList();
+            ViewBag.Trainers = new SelectList(trainers, "Id", "Name");
+
+        }
+
+
+
+
+    }
 }
