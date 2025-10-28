@@ -162,17 +162,8 @@ namespace Business_Logic_Layer.Services.SessionService.Class
         
         private bool IsSessionAvailableForDeleting(Session session)
         {
-            if (session is null) return false;
-
-            if (unitOfWork.sessionRepository.GetCountOfBookings(session.Id) > 0) return false;
-
-            if (session.StartTime <= DateTime.Now) return false;
-
-            if (session.EndTime <= DateTime.Now) return false;
-
-            if(session.StartTime>=DateTime.Now && session.EndTime>=DateTime.Now) return false;
-
-                return true;
+            return session.EndTime < DateTime.Now &&
+                unitOfWork.sessionRepository.GetCountOfBookings(session.Id) == 0;
 
 
         }

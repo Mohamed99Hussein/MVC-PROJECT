@@ -1,4 +1,5 @@
 ﻿using Business_Logic_Layer.Services.MemberService.Classes;
+using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.Services.SessionService.Interface;
 using GymManagementSystemBLL.ViewModels.SessionViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -132,6 +133,43 @@ namespace Presentation_Layer.Controllers
 
 
 
+        }
+
+
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session Id, Can not be less than 1";
+
+                RedirectToAction(nameof(Index));
+            }
+            var session = sessionService.GetSessionById(id);
+            if (session is null)
+            {
+                TempData["ErrorMessage"] = "Sorry, Session Not Found.";
+
+                return RedirectToAction(nameof(Index));
+
+            }
+            ViewBag.SessionId = session.Id;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteConfirmed([FromForm] int id)
+        {
+            var Result = sessionService.DeleteSession(id);
+
+            if (Result)
+                TempData["SuccessMessage"] = "Session Deleted Successfully.";
+            else
+            {
+                TempData["ErrorMessage"] = "Sorry, Session Failed to be Deleted.";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
 
