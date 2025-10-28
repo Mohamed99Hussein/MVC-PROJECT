@@ -6,10 +6,10 @@
                 <!-- If Session Ongoing  bg-success -->
                 <!-- If Session Upcoming  bg-primary -->
                 <!-- If Session Completed  bg-secondary -->
-                <div class="card-header  text-white text-center py-4">
+                <div class="card-header @(Model.Status == "Ongoing" ? "bg-success" : Model.Status == "Upcoming" ? "bg-primary" : "bg-secondary") text-white text-center py-4">
                     <i class="bi bi-calendar-event display-4 mb-3"></i>
                     <h2 class="mb-2">@Model.CategoryName</h2>
-                    <span class="badge bg-light text-dark fs-6 @(Model.Status == "Ongoing" ? "bg-success" : Model.Status == "Upcoming" ? "bg-primary" : "bg-secondary") ">@Model.Status</span>
+                    <span class="badge bg-light text-danger fs-6 @(Model.Status == "Ongoing" ? "bg-success" : Model.Status == "Upcoming" ? "bg-primary" : "bg-secondary") ">@Model.Status</span>
                 </div>
 
                 <div class="card-body p-4">
