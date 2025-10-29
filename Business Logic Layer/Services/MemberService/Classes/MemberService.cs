@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business_Logic_Layer.Services.AttachmentService;
 using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Data_Access_Layer.Entities;
@@ -16,11 +17,13 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IAttachmentService attachmentService;
 
-        public MemberService(IUnitOfWork unitOfWork,IMapper mapper)
+        public MemberService(IUnitOfWork unitOfWork,IMapper mapper,IAttachmentService attachmentService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.attachmentService = attachmentService;
         }
 
         public bool CreateMember(CreateMemberViewModel CreateMember)
@@ -30,12 +33,23 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
                 if (CheckEmail(CreateMember.Email)|| CheckPhone(CreateMember.Phone))
                 return false;
+
+                var folderName = attachmentService.Upload("Members",CreateMember.FilePhoto);
                 
+                if(String.IsNullOrEmpty(folderName)) return false;
+
 
                 var mappedMember = mapper.Map<CreateMemberViewModel, Member>(CreateMember);
 
                 unitOfWork.GetRepository<Member>().Add(mappedMember);
-                return unitOfWork.SaveChanges() > 0;
+                mappedMember.Photo = folderName;
+                var IsCreated = unitOfWork.SaveChanges() > 0;
+                if(!IsCreated)
+                {
+                    attachmentService.Delete(folderName, "Members");
+                    return false;
+                }
+                return true;
 
               
             }
@@ -176,7 +190,13 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
                     }
                 }
                         unitOfWork.GetRepository<Member>().Delete(member);
-                        return unitOfWork.SaveChanges() > 0;
+                        var IsDeleted = unitOfWork.SaveChanges() > 0;
+                if (IsDeleted)
+                {
+                    attachmentService.Delete(member.Photo, "Members");
+                }
+
+                return IsDeleted;
             }
             catch (Exception ex)
             {
