@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
-using System.IO;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services.AttachmentService
 {
-    public class AttachmentService :  IAttachmentService 
+    public class AttachmentService : IAttachmentService
     {
 
         public AttachmentService(IHostEnvironment webHost)
@@ -48,10 +49,10 @@ namespace Business_Logic_Layer.Services.AttachmentService
 
                 return FileName;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Failed to Upload File to folder= {folderName} : {ex}");
-                   return null;
+                return null;
             }
         }
 
@@ -73,11 +74,11 @@ namespace Business_Logic_Layer.Services.AttachmentService
                 return false;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Failed to delete file with name {fileName} : {ex}");
-            
-               return false;
+
+                return false;
             }
         }
 
@@ -87,10 +88,5 @@ namespace Business_Logic_Layer.Services.AttachmentService
 
     }
 
-   
+
 }
-
-
-
-
-

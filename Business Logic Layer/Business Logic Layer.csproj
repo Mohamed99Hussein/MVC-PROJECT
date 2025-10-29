@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Business_Logic_Layer</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -9,9 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Features" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
