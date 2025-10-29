@@ -11,7 +11,7 @@ namespace Data_Access_Layer.Entities
         // JoinDate == CreatedAt from BaseEntity 
 
         // Photo URL or path
-        public string? Photo { get; set; } = null!;
+        public string Photo { get; set; } = null!;
 
         #region Member - HealthRecord
         public HealthRecord HealthRecord { get; set; } = null!;
