@@ -12,10 +12,12 @@ using Business_Logic_Layer.Services.TranierService.Class;
 using Business_Logic_Layer.Services.TranierService.Interface;
 using Data_Access_Layer.Data.Contexts;
 using Data_Access_Layer.Data.DataSeeding;
+using Data_Access_Layer.Entities;
 using Data_Access_Layer.Repositories.Classes;
 using Data_Access_Layer.Repositories.Interfaces;
 using Data_Access_Layer.Unit_Of_Work.Class;
 using Data_Access_Layer.Unit_Of_Work.Interface;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Presentation_Layer
@@ -52,11 +54,17 @@ namespace Presentation_Layer
 
             using var Scope = app.Services.CreateScope();
             var DbContext = Scope.ServiceProvider.GetRequiredService<GymSystemDBContext>();
+            var roleManager = Scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = Scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+
+
             var PendingMigrations = DbContext.Database.GetPendingMigrations();
             if (PendingMigrations != null && PendingMigrations.Any())
                 DbContext.Database.Migrate();
 
             GymDBContextSeedData.SeedData(DbContext);
+            IdentityDbContextSeeding.SeedData(roleManager,userManager);
 
             #endregion
 
