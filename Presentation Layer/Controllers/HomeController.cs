@@ -7,6 +7,7 @@ namespace Presentation_Layer.Controllers
     public class HomeController : Controller
     {
         private readonly IAnalyticsService analyticsService;
+        
 
         public HomeController(IAnalyticsService analyticsService)
         {

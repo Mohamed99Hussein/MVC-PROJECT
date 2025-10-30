@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Business_Logic_Layer.Services.AttachmentService;
 using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Data_Access_Layer.Entities;
 using Data_Access_Layer.Repositories.Interfaces;
 using Data_Access_Layer.Unit_Of_Work.Interface;
+using Presentation_Layer.AttachmentService;
 using System;
 using System.Collections.Generic;
 using System.Linq;

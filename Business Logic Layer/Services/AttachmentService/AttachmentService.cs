@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Presentation_Layer.AttachmentService;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Text; 
 using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services.AttachmentService
 {
     public class AttachmentService : IAttachmentService
     {
-        
+
         public AttachmentService(IHostEnvironment webHost)
         {
             this.webHost = webHost;
@@ -90,3 +91,6 @@ namespace Business_Logic_Layer.Services.AttachmentService
 
 
 }
+
+
+
