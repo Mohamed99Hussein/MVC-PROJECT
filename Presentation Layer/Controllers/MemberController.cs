@@ -1,9 +1,11 @@
 ﻿using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.ViewModels.MemberViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation_Layer.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class MemberController : Controller
     {
         private readonly IMemberService memberService;

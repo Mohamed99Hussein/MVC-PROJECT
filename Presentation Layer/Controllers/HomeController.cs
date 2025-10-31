@@ -1,9 +1,11 @@
 ﻿using Business_Logic_Layer.Services.AnalyticsService.Class;
 using Business_Logic_Layer.Services.AnalyticsService.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation_Layer.Controllers
 {
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly IAnalyticsService analyticsService;
