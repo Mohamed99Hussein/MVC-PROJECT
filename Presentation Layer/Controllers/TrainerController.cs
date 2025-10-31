@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Presentation_Layer.Controllers
 {
-    [Authorize(Roles ="SuperAdmin")]
+   // [Authorize(Roles ="SuperAdmin")]
     public class TrainerController : Controller
     {
         private readonly ITrainerService trainerService;

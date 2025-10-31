@@ -71,16 +71,17 @@ namespace Presentation_Layer
 
             using var Scope = app.Services.CreateScope();
             var DbContext = Scope.ServiceProvider.GetRequiredService<GymSystemDBContext>();
-            var roleManager = Scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = Scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
+            
 
 
             var PendingMigrations = DbContext.Database.GetPendingMigrations();
             if (PendingMigrations != null && PendingMigrations.Any())
                 DbContext.Database.Migrate();
-
+           
             GymDBContextSeedData.SeedData(DbContext);
+            var roleManager = Scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = Scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
             IdentityDbContextSeeding.SeedData(roleManager,userManager);
 
 
@@ -103,7 +104,7 @@ namespace Presentation_Layer
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Account}/{action=Login}/{id?}")
                 .WithStaticAssets();
             
             app.Run();

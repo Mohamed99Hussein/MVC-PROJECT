@@ -23,7 +23,7 @@ namespace Presentation_Layer.Controllers
         {
             return View();
         }
-
+         
 
         [HttpPost]
         public async Task<ActionResult> Login(LoginViewModel model)
@@ -44,7 +44,7 @@ namespace Presentation_Layer.Controllers
             }
 
             // ✅ نسجل الدخول بالبريد وكلمة السر
-            var result = await signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
+            var result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
             if (result.Succeeded)
             {
@@ -66,5 +66,22 @@ namespace Presentation_Layer.Controllers
             ModelState.AddModelError("InvalidLogin", "Invalid email or password.");
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            signInManager.SignOutAsync().GetAwaiter().GetResult();
+            return RedirectToAction(nameof(Login));
+        }
+
+
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
+
+
+
     }
 }
