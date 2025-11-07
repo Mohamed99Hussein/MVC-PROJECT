@@ -3,6 +3,8 @@ using Business_Logic_Layer.Services.AccountService;
 using Business_Logic_Layer.Services.AnalyticsService.Class;
 using Business_Logic_Layer.Services.AnalyticsService.Interface;
 using Business_Logic_Layer.Services.AttachmentService;
+using Business_Logic_Layer.Services.BookingService.Class;
+using Business_Logic_Layer.Services.BookingService.Interface;
 using Business_Logic_Layer.Services.MemberService.Classes;
 using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.Services.MembershipService.Class;
@@ -65,6 +67,8 @@ namespace Presentation_Layer
             builder.Services.AddScoped<IMembershipRepository,MembershipRepository>();
             builder.Services.AddScoped<IMembershipService,MembershipService>();
 
+            builder.Services.AddScoped<IBookingRepository,BookingRepository>();
+            builder.Services.AddScoped<IBookingService,BookingService>();
 
 
 
