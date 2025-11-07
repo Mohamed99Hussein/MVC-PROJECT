@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business_Logic_Layer.ViewModels.MembershipViewModels;
 using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Business_Logic_Layer.ViewModels.PlanViewModels;
 using Business_Logic_Layer.ViewModels.SessionViewModels;
@@ -22,6 +23,7 @@ namespace Business_Logic_Layer.AutoMapper
             MapMember();
             MapPlan();
             MapTrainer();
+            MapMembership();
         }
 
         private void MapSession()
@@ -101,8 +103,8 @@ namespace Business_Logic_Layer.AutoMapper
                    //    BloodType = CMV.HealthRecordViewModel.BloodType,
                    //    Note = CMV.HealthRecordViewModel.Note,
                    //}));
-                   .ForMember(m=>m.HealthRecord,
-                   opt=>opt.MapFrom(src=>src.HealthRecordViewModel));
+                   .ForMember(m => m.HealthRecord,
+                   opt => opt.MapFrom(src => src.HealthRecordViewModel));
 
             //CreateMap<CreateMemberViewModel, HealthRecord>()
             //    .ForMember(HR => HR.Height,
@@ -120,12 +122,12 @@ namespace Business_Logic_Layer.AutoMapper
 
             #region Member - MemberViewModels
             CreateMap<Member, MemberViewModel>()
-                .ForMember(mvm=>mvm.Gender,
-                Options=>Options.MapFrom(m=>m.Gender.ToString()))
-                .ForMember(mvm=>mvm.DateOfBirth,Options=>
-                Options.MapFrom(m=>m.DateOfBirth.ToShortDateString()))
-               .ForMember(mvm=>mvm.Address,
-                Options=>Options.MapFrom(m=>$"{m.Address.BuildingNumber} - {m.Address.Street} - {m.Address.City}"))
+                .ForMember(mvm => mvm.Gender,
+                Options => Options.MapFrom(m => m.Gender.ToString()))
+                .ForMember(mvm => mvm.DateOfBirth, Options =>
+                Options.MapFrom(m => m.DateOfBirth.ToShortDateString()))
+               .ForMember(mvm => mvm.Address,
+                Options => Options.MapFrom(m => $"{m.Address.BuildingNumber} - {m.Address.Street} - {m.Address.City}"))
 
 
 
@@ -156,13 +158,13 @@ namespace Business_Logic_Layer.AutoMapper
 
             #region MemberToUpdateViewModel - Member
             CreateMap<MemberToUpdateViewModel, Member>()
-            .ForMember(m=>m.Name,Options=>Options.Ignore())
-            .ForMember(m=>m.Photo,Options=>Options.Ignore())
-            .AfterMap((muvm,m)=>
+            .ForMember(m => m.Name, Options => Options.Ignore())
+            .ForMember(m => m.Photo, Options => Options.Ignore())
+            .AfterMap((muvm, m) =>
             {
-                m.Address.BuildingNumber= muvm.BuildingNumber;
-                m.Address.Street= muvm.Street;
-                m.Address.City= muvm.City;
+                m.Address.BuildingNumber = muvm.BuildingNumber;
+                m.Address.Street = muvm.Street;
+                m.Address.City = muvm.City;
                 m.UpdatedAt = DateTime.Now;
             });
 
@@ -178,12 +180,12 @@ namespace Business_Logic_Layer.AutoMapper
             #endregion
 
             #region Plan - PlanToUpdateViewModel
-           CreateMap<Plan, PlanToUpdateViewModel>();
+            CreateMap<Plan, PlanToUpdateViewModel>();
             #endregion
 
             #region PlanToUpdateViewModel - Plan
             CreateMap<PlanToUpdateViewModel, Plan>()
-                //.ForMember(p => p.Name, Options => Options.Ignore())
+                 //.ForMember(p => p.Name, Options => Options.Ignore())
                  .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
 
             #endregion
@@ -242,6 +244,45 @@ namespace Business_Logic_Layer.AutoMapper
 
         }
 
+        private void MapMembership()
+        {
+            CreateMap<MemberShip, MembershipViewModel>()
+                .ForMember(MVM => MVM.MemberName,
+                Options => Options.MapFrom(M => M.Member.Name))
+                .ForMember(MVM => MVM.PlanName,
+                Options => Options.MapFrom(M => M.Plan.Name));
+
+            CreateMap<CreateMemberShipViewModel, MemberShip>();
+            CreateMap<Plan, PlanSelectListViewModel>();
+            CreateMap<Member, MemberSelectListViewModel>();
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -251,4 +292,4 @@ namespace Business_Logic_Layer.AutoMapper
 
 
     }
-    }
+}
