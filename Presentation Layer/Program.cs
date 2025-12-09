@@ -1,6 +1,8 @@
 using Data_Access_Layer.Data.Contexts;
 using Data_Access_Layer.Repositories.Classes;
 using Data_Access_Layer.Repositories.Interfaces;
+using Data_Access_Layer.Unit_Of_Work.Class;
+using Data_Access_Layer.Unit_Of_Work.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace Presentation_Layer
@@ -17,9 +19,13 @@ namespace Presentation_Layer
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddScoped(typeof(IgenericRepository<>),typeof(GenericRepository<>));
+            //builder.Services.AddScoped(typeof(IgenericRepository<>),typeof(GenericRepository<>));
 
-            builder.Services.AddScoped<IPlanRepository,PlanRepository>();   
+            //builder.Services.AddScoped<IPlanRepository,PlanRepository>();
+            
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();   
+
+
 
             var app = builder.Build();
 

@@ -18,19 +18,19 @@ namespace Data_Access_Layer.Repositories.Classes
             this.context = context;
         }
 
-        public int Add(TEntity entity)
-        {
-            context.Set<TEntity>().Add(entity);
-            return context.SaveChanges();
+        public void Add(TEntity entity) => context.Set<TEntity>().Add(entity);
 
-        }
 
-        public int Delete(TEntity entity)
-        {
-            context.Set<TEntity>().Remove(entity);
-              return context.SaveChanges();
 
-        }
+
+
+
+        public void Delete(TEntity entity) => context.Set<TEntity>().Remove(entity);
+
+
+
+
+
 
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null )
@@ -45,13 +45,13 @@ namespace Data_Access_Layer.Repositories.Classes
         public TEntity? GetById(int id) => context.Set<TEntity>().Find(id);
        
 
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             var entry = context.Set<TEntity>().Find(entity);
             if (entry is not null)
                 context.Set<TEntity>().Update(entity);
                 
-           return context.SaveChanges(); 
+          
                
 
         }
