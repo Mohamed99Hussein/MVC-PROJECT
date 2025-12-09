@@ -16,7 +16,7 @@ namespace Data_Access_Layer.Repositories.Interfaces
         TEntity? GetById(int id);
         int Add(TEntity entity);
         int Update(TEntity entity);
-        int Delete(int id);
+        int Delete(TEntity entity);
 
     }
 }

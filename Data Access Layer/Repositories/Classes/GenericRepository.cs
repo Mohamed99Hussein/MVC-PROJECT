@@ -25,17 +25,10 @@ namespace Data_Access_Layer.Repositories.Classes
 
         }
 
-        public int Delete(int id)
+        public int Delete(TEntity entity)
         {
-            var entity = context.Set<TEntity>().Find(id);
-
-            if (entity is null)
-            {
-                return 0; 
-            }
-
             context.Set<TEntity>().Remove(entity);
-            return context.SaveChanges();
+              return context.SaveChanges();
 
         }
 
