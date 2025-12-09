@@ -31,5 +31,18 @@ namespace Data_Access_Layer.Repositories.Classes
             return dbContext.MemberSessions
                 .Count(ms => ms.SessionId == sessionId);
         }
+
+        public Session? GetSessionWithCategoryAndTrainerById(int sessionId)
+        {
+           var Session = dbContext.Sessions
+                .Include(s => s.Category)
+                .Include(s => s.SessionTrainer)
+                .FirstOrDefault(s => s.Id == sessionId);
+
+            if (Session == null) return null;
+
+
+            return Session;
+        }
     }
 }

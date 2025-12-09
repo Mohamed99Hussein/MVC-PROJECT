@@ -13,6 +13,8 @@ namespace Data_Access_Layer.Repositories.Interfaces
 
       public int GetCountOfBookings(int sessionId);
 
+      public Session? GetSessionWithCategoryAndTrainerById(int sessionId);
+
 
     }
 }

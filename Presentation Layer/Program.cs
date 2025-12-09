@@ -1,3 +1,4 @@
+using Business_Logic_Layer.AutoMapper;
 using Data_Access_Layer.Data.Contexts;
 using Data_Access_Layer.Data.DataSeeding;
 using Data_Access_Layer.Repositories.Classes;
@@ -26,6 +27,7 @@ namespace Presentation_Layer
             
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();   
             builder.Services.AddScoped<ISessionRepository,SessionRepository>();
+            builder.Services.AddAutoMapper(x=>x.AddProfile(new MappingProfiles()));
 
 
 
