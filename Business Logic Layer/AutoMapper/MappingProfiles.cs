@@ -24,6 +24,7 @@ namespace Business_Logic_Layer.AutoMapper
             MapPlan();
             MapTrainer();
             MapMembership();
+            MapSessionSchedule();
         }
 
         private void MapSession()
@@ -255,17 +256,14 @@ namespace Business_Logic_Layer.AutoMapper
             CreateMap<CreateMemberShipViewModel, MemberShip>();
             CreateMap<Plan, PlanSelectListViewModel>();
             CreateMap<Member, MemberSelectListViewModel>();
-
-
-
-
-
-
-
-
         }
 
+        private void MapSessionSchedule()
+        {
 
+            // Future mapping configurations for SessionSchedule can be added here.
+
+        }
 
 
 
