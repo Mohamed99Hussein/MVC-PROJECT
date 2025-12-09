@@ -1,4 +1,5 @@
 ﻿using Business_Logic_Layer.Services.MemberService.Interfaces;
+using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation_Layer.Controllers
@@ -15,8 +16,8 @@ namespace Presentation_Layer.Controllers
         public ActionResult Index()
         {
             var Data = memberService.GetAllMembers();
-           
-                     return View(Data);
+
+                return View(Data);
         }
 
         public ActionResult MemberDetails(int id)
@@ -60,7 +61,34 @@ namespace Presentation_Layer.Controllers
             return View(HealthRecordDetails);
         }
 
+        public ActionResult Create()
+        {
+            return View();
 
+        }
+
+        [HttpPost]
+        public ActionResult CreateMember(CreateMemberViewModel CreatedMember)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("DataInvalid", "Invalid Data Provided, Please check data and missing fields and Try Again");
+                return View(nameof(Create),CreatedMember);
+            }
+                
+            bool Result = memberService.CreateMember(CreatedMember);
+            if (Result)
+            {
+                TempData["SuccessMessage"] = "Member Created Successfully.";
+            }
+              
+            else
+                {
+                TempData["ErrorMessage"] = "Member Failed to create, Please check Phone and Email.";
+                }
+            return RedirectToAction(nameof(Index));
+
+        }
 
 
 

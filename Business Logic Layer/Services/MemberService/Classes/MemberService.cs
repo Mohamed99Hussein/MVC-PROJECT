@@ -27,16 +27,17 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
         {
             try
             {
+
+                if (CheckEmail(CreateMember.Email)|| CheckPhone(CreateMember.Phone))
+                return false;
                 
-                if (CheckEmail(CreateMember.Email) && CheckPhone(CreateMember.Phone))
-                                            return false;
 
                 var mappedMember = mapper.Map<CreateMemberViewModel, Member>(CreateMember);
 
                 unitOfWork.GetRepository<Member>().Add(mappedMember);
                 return unitOfWork.SaveChanges() > 0;
 
-                //return memberRepository.Add(Member) > 0;
+              
             }
 
             catch (Exception)
@@ -115,7 +116,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
                
                 var memberViewModel = mapper.Map<Member, MemberViewModel>(Member);
 
-                var MemberShipActive = unitOfWork.GetRepository<MemberShip>().GetAll(x => x.Id == MemberId&& x.Status=="Active")
+                var MemberShipActive = unitOfWork.GetRepository<MemberShip>().GetAll(x => x.MemberId == MemberId&& x.Status=="Active")
                     .FirstOrDefault();
                 
                 if (MemberShipActive != null)
