@@ -32,7 +32,13 @@ namespace Business_Logic_Layer.AutoMapper
                 Options => Options.MapFrom(S => S.Category.CategoryName))
                 .ForMember(SVM => SVM.TrainerName,
                 Options => Options.MapFrom(S => S.SessionTrainer.Name))
-                .ForMember(SVM => SVM.AvailableSlots, Options => Options.Ignore());
+                .ForMember(SVM => SVM.AvailableSlots, Options => Options.Ignore())
+                .ForMember(dest => dest.StartDate, Options =>
+                Options.MapFrom(src => src.StartTime))
+                .ForMember(dest => dest.EndDate, Options =>
+                Options.MapFrom(src => src.EndTime));
+
+
 
             #endregion
 
@@ -66,6 +72,13 @@ namespace Business_Logic_Layer.AutoMapper
                 Options => Options.MapFrom(USVM => USVM.EndDate));
 
             #endregion
+
+            CreateMap<Trainer, TrainerToSelectViewModel>();
+
+            CreateMap<Category, CategoryToSelectViewModel>()
+                .ForMember(dest => dest.Name,
+                Options =>
+                Options.MapFrom(src => src.CategoryName));
 
         }
 

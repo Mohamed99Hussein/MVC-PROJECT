@@ -43,8 +43,15 @@ else if (TempData["ErrorMessage"] != null)
                                 <h5 class="mb-0">
                                     <i class="bi bi-calendar-event me-2"></i>@session.CategoryName
                                 </h5>
-                                <span class="badge bg-light text-dark @(session.Status == "Ongoing" ? "bg-success" : session.Status == "Upcoming" ? "bg-primary" : "bg-secondary") ">@session.Status</span>
-                            </div>
+                                <span class="badge
+            @(session.Status == "Ongoing"
+                                              ? "bg-success"
+                                              : session.Status == "Upcoming"
+                                                  ? "bg-primary"
+                                                  : "bg-secondary")">
+                            @session.Status
+                        </span>
+                    </div>
                         </div>
                         <div class="card-body">
                             <p class="text-muted mb-3">@session.Description</p>

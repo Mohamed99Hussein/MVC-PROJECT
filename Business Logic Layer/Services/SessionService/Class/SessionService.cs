@@ -112,6 +112,24 @@ namespace Business_Logic_Layer.Services.SessionService.Class
                     return unitOfWork.SaveChanges() > 0;
         }
 
+        public IEnumerable<TrainerToSelectViewModel> GetAllTrainersForDropDownList()
+        {
+            var trainers = unitOfWork.GetRepository<Trainer>().GetAll();
+
+          return  mapper.Map<IEnumerable<Trainer>, IEnumerable<TrainerToSelectViewModel>>(trainers);
+            
+        }
+
+        public IEnumerable<CategoryToSelectViewModel> GetAllCategoriesForDropDownList()
+        {
+           var categories = unitOfWork.GetRepository<Category>().GetAll();
+
+            return mapper.Map<IEnumerable<Category>, IEnumerable<CategoryToSelectViewModel>>(categories);
+        }
+
+
+
+
         #region Private Helper Methods
 
         private bool IsSessionAvailableForUpdating(Session session)
@@ -142,7 +160,7 @@ namespace Business_Logic_Layer.Services.SessionService.Class
 
         private bool AreDatesValid(DateTime startDate, DateTime endDate)
         {
-            return startDate < endDate;
+            return startDate < endDate && DateTime.Now > startDate ;
         }
 
         private bool IsSessionAvailableForDeleting(Session session)
@@ -161,6 +179,8 @@ namespace Business_Logic_Layer.Services.SessionService.Class
 
 
         }
+
+        
 
 
         #endregion
