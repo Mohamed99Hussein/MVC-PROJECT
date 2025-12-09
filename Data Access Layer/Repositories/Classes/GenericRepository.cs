@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Repositories.Classes
 {
-    internal class GenericRepository<TEntity> : IgenericRepository<TEntity> where TEntity : class, new()
+    public class GenericRepository<TEntity> : IgenericRepository<TEntity> where TEntity : class, new()
     {
         private readonly GymSystemDBContext context;
 
@@ -39,8 +39,15 @@ namespace Data_Access_Layer.Repositories.Classes
 
         }
 
-        public IEnumerable<TEntity> GetAll() => context.Set<TEntity>().AsNoTracking().ToList();
 
+        public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null )
+        {
+            if(condition is null)
+              return context.Set<TEntity>().AsNoTracking().ToList();
+            else
+              return context.Set<TEntity>().AsNoTracking().Where(condition).ToList();
+
+        }
 
         public TEntity? GetById(int id) => context.Set<TEntity>().Find(id);
        
