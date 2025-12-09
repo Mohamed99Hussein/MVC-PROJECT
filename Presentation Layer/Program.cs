@@ -1,4 +1,5 @@
 using Data_Access_Layer.Data.Contexts;
+using Data_Access_Layer.Data.DataSeeding;
 using Data_Access_Layer.Repositories.Classes;
 using Data_Access_Layer.Repositories.Interfaces;
 using Data_Access_Layer.Unit_Of_Work.Class;
@@ -28,6 +29,18 @@ namespace Presentation_Layer
 
 
             var app = builder.Build();
+
+            #region Migrate Database - Data Seeding
+
+            using var Scope = app.Services.CreateScope();
+            var DbContext = Scope.ServiceProvider.GetRequiredService<GymSystemDBContext>();
+            var PendingMigrations = DbContext.Database.GetPendingMigrations();
+            if (PendingMigrations != null && PendingMigrations.Any())
+                DbContext.Database.Migrate();
+
+            GymDBContextSeedData.SeedData(DbContext);
+
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
