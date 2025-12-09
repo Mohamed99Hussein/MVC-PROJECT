@@ -87,7 +87,7 @@ namespace Business_Logic_Layer.Services.PlanService.Class
             if (Plan is null || HasActiveMemberShip(PlanId))
                 return false;
 
-            Plan.IsActive = !Plan.IsActive;
+            Plan.IsActive = Plan.IsActive == false ? true : false;
             Plan.UpdatedAt = DateTime.Now;
 
             try

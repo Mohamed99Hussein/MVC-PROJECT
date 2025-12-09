@@ -84,9 +84,26 @@ namespace Presentation_Layer.Controllers
 
 
         }
-    
-    
-    
+
+        [HttpPost]
+        public ActionResult Activate([FromRoute] int id)
+        {
+            var Result = planService.TogglePlanStatus(id);
+
+            if (Result)
+            {
+                TempData["SuccessMessage"] = "Plan Status Changed Successfully.";
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Sorry, Failed to Change Plan Status.";
+            }
+
+            return RedirectToAction(nameof(Index));
+
+
+        }
     
     
     
