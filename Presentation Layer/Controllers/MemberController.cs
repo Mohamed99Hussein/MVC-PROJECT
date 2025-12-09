@@ -16,5 +16,20 @@ namespace Presentation_Layer.Controllers
             var Data = memberService.GetAllMembers();
             return View(Data);
         }
+
+        public ActionResult MemberDetails(int id)
+        {
+            if (id <= 0)
+                return View(nameof(Index));
+
+            var MemberDetails = memberService.GetMemberDetails(id);
+           
+            if(MemberDetails is null)
+                return View(nameof(Index));
+
+            return View(MemberDetails);
+
+        }
+        
     }
 }
