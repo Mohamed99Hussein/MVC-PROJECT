@@ -74,7 +74,7 @@ namespace Business_Logic_Layer.AutoMapper
             #region CreateMemberViewModel-Member
             CreateMap<CreateMemberViewModel, Member>()
                    .ForMember(M => M.Address,
-                   Options => Options.MapFrom(CMV => new Addess
+                   Options => Options.MapFrom(CMV => new Address
                    {
                        BuildingNumber = CMV.BuildingNumber,
                        Street = CMV.Street,
@@ -124,7 +124,7 @@ namespace Business_Logic_Layer.AutoMapper
 
             #region HealthRecord - HealthRecordViewModels
 
-            CreateMap<HealthRecord, HealthRecordViewModel>();
+            CreateMap<HealthRecord, HealthRecordViewModel>().ReverseMap();
 
             #endregion
 
@@ -187,7 +187,7 @@ namespace Business_Logic_Layer.AutoMapper
             #region CreateTrainerViewModel - Trainer
             CreateMap<CreateTrainerViewModel, Trainer>()
                 .ForMember(t => t.Address,
-                Options => Options.MapFrom(CTV => new Addess
+                Options => Options.MapFrom(CTV => new Address
                 {
                     BuildingNumber = CTV.BuildingNumber,
                     Street = CTV.Street,
