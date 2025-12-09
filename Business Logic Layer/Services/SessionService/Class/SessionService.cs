@@ -158,11 +158,8 @@ namespace Business_Logic_Layer.Services.SessionService.Class
             return unitOfWork.GetRepository<Category>().GetById(categoryId) is not null;
         }
 
-        private bool AreDatesValid(DateTime startDate, DateTime endDate)
-        {
-            return startDate < endDate && DateTime.Now > startDate ;
-        }
-
+        private bool AreDatesValid(DateTime startDate, DateTime endDate) => startDate<endDate && DateTime.Now < startDate ;
+        
         private bool IsSessionAvailableForDeleting(Session session)
         {
             if (session is null) return false;

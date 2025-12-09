@@ -75,8 +75,64 @@ namespace Presentation_Layer.Controllers
 
         }
 
+        public ActionResult Edit(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session Id, Can not be less than 1";
+
+                RedirectToAction(nameof(Index));
+            }
+
+            var GetSessionToUpdate = sessionService.GetSessionForUpdate(id);
+
+            if (GetSessionToUpdate is null)
+            {
+                TempData["ErrorMessage"] = "Sorry, Session Not Found.";
+
+               return RedirectToAction(nameof(Index));
+
+            }
+            else
+            {
+                var trainers = sessionService.GetAllTrainersForDropDownList();
+                ViewBag.Trainers = new SelectList(trainers, "Id", "Name");
+
+                return View(GetSessionToUpdate);
+            }
 
 
+        }
+
+        [HttpPost]
+        public ActionResult Edit([FromRoute] int id, UpdateSessionViewModel UpdatedSession)
+        {
+            if (!ModelState.IsValid)
+            {
+                var trainers = sessionService.GetAllTrainersForDropDownList();
+                ViewBag.Trainers = new SelectList(trainers, "Id", "Name");
+                return View(UpdatedSession);
+
+            }
+
+            var result = sessionService.UpdateSession(id, UpdatedSession);
+
+            if(result)
+            {
+                TempData["SuccessMessage"] = "Session Updated Successfully.";
+
+            }
+
+            else
+            {
+                TempData["ErrorMessage"] = "Session Failed to Update.";
+            }
+            return RedirectToAction(nameof(Index));
+
+
+
+
+        }
 
 
 
