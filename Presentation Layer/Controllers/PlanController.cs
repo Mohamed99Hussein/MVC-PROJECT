@@ -1,4 +1,5 @@
 ﻿using Business_Logic_Layer.Services.PlanService.Interface;
+using Business_Logic_Layer.ViewModels.PlanViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation_Layer.Controllers
@@ -37,5 +38,57 @@ namespace Presentation_Layer.Controllers
             return View(planDetails);
 
         }
+
+        public ActionResult Edit(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Plan Id, Can not be less than 1";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            var planToEdit = planService.GetPlanToUpdate(id);
+            if(planToEdit == null)
+            {
+                TempData["ErrorMessage"] = "Plan Not Found";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(planToEdit);
+
+
+
+        }
+        [HttpPost]
+        public ActionResult Edit([FromRoute]int id,PlanToUpdateViewModel planToUpdate )
+        {
+            if(!ModelState.IsValid)
+            {
+                ModelState.AddModelError("WrongData", "Plan can't be updated.");
+            }
+
+            var CheckPlan = planService.UpdatePlan(id, planToUpdate);
+
+            if(CheckPlan)
+            {
+                TempData["SuccessMessage"] = "Plan Updated Successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Plan Failed to be Updated.";
+            }
+
+            return RedirectToAction(nameof(Index));
+
+
+
+        }
+    
+    
+    
+    
+    
+    
     }
 }
