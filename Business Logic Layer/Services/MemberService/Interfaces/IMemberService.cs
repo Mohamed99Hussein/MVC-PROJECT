@@ -12,5 +12,7 @@ namespace Business_Logic_Layer.Services.MemberService.Interfaces
     {
         IEnumerable<MemberViewModel> GetAllMembers();
 
+        bool CreateMember(CreateMemberViewModel CreateMember);
+
     }
 }
