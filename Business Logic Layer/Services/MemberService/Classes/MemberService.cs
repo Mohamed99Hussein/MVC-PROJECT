@@ -32,10 +32,9 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
         {
             try
             {
-                var EmailExists = memberRepository.GetAll(x => x.Email == CreateMember.Email);
-                var PhonesExists = memberRepository.GetAll(x => x.Phone == CreateMember.Phone);
-
-                if (EmailExists.Any() && PhonesExists.Any()) return false;
+                
+                if (CheckEmail(CreateMember.Email) && CheckPhone(CreateMember.Phone))
+                                            return false;
 
                 var Member = new Member()
                 {
@@ -170,6 +169,55 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
         }
 
+        public MemberToUpdateViewModel? GetMemberToUpdate(int MemberId)
+        {
+            var TargetMember = memberRepository.GetById(MemberId);
+
+            if (TargetMember is  null) return null;
+
+            return new MemberToUpdateViewModel()
+            {
+                Name = TargetMember.Name,
+                Phone = TargetMember.Phone,
+                Email = TargetMember.Email,
+                BuildingNumber = TargetMember.Address.BuildingNumber,
+                City = TargetMember.Address.City,
+                Street = TargetMember.Address.Street,
+                Photo = TargetMember.Photo
+            };
+
+        }
+
+        public bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember)
+        {
+           
+            if (CheckEmail(UpdatedMember.Email) || CheckPhone(UpdatedMember.Phone))
+                                    return false;
+
+            var member = memberRepository.GetById(MemberId);
+
+            if (member is null) return false;
+
+            member.Email = UpdatedMember.Email;
+            member.Phone = UpdatedMember.Phone;
+            member.Address.BuildingNumber = UpdatedMember.BuildingNumber;
+            member.Address.City = UpdatedMember.City;
+            member.Address.Street = UpdatedMember.Street;
+            member.UpdatedAt = DateTime.Now;
+
+            return memberRepository.Update(member) > 0;
+
+        }
+
+        private bool CheckEmail(string email)
+        {
+            return memberRepository.GetAll(X => X.Email== email).Any();
+        }
+
+        private bool CheckPhone(string phone)
+        {
+            return memberRepository.GetAll(X => X.Phone == phone).Any();
+        }
 
     }
 }

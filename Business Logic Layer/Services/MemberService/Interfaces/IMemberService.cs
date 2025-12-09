@@ -18,5 +18,10 @@ namespace Business_Logic_Layer.Services.MemberService.Interfaces
 
         HealthRecordViewModel? GetHealthRecord(int MemberId);
 
+
+        MemberToUpdateViewModel? GetMemberToUpdate(int MemberId);
+
+        bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember);
+
     }
 }
