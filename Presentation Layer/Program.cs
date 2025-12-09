@@ -1,6 +1,8 @@
 using Business_Logic_Layer.AutoMapper;
 using Business_Logic_Layer.Services.AnalyticsService.Class;
 using Business_Logic_Layer.Services.AnalyticsService.Interface;
+using Business_Logic_Layer.Services.MemberService.Classes;
+using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Data_Access_Layer.Data.Contexts;
 using Data_Access_Layer.Data.DataSeeding;
 using Data_Access_Layer.Repositories.Classes;
@@ -31,7 +33,7 @@ namespace Presentation_Layer
             builder.Services.AddScoped<ISessionRepository,SessionRepository>();
             builder.Services.AddAutoMapper(x=>x.AddProfile(new MappingProfiles()));
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
-
+            builder.Services.AddScoped<IMemberService,MemberService>();
 
             var app = builder.Build();
 

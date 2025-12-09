@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services.MemberService.Interfaces
 {
-    internal interface IMemberService 
+    public interface IMemberService 
     {
-        IEnumerable<MemberViewModel> GetAllMembers();
+        public IEnumerable<MemberViewModel> GetAllMembers();
 
-      bool CreateMember(CreateMemberViewModel CreateMember);
+        public bool CreateMember(CreateMemberViewModel CreateMember);
 
-        MemberViewModel? GetMemberDetails(int MemberId);
+        public MemberViewModel? GetMemberDetails(int MemberId);
 
-        HealthRecordViewModel? GetHealthRecord(int MemberId);
+        public HealthRecordViewModel? GetHealthRecord(int MemberId);
 
 
-        MemberToUpdateViewModel? GetMemberToUpdate(int MemberId);
+        public MemberToUpdateViewModel? GetMemberToUpdate(int MemberId);
 
-      bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember);
+        public bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember);
 
-      bool RemoveMember(int MemberId);
+        public bool RemoveMember(int MemberId);
 
     }
 }
