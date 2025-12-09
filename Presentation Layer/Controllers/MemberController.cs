@@ -115,7 +115,7 @@ namespace Presentation_Layer.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Your Upfate isn't valid. Please try again.";
+                TempData["ErrorMessage"] = "Your Update isn't valid. Please try again.";
                 return View(EditMember);
             }
 
