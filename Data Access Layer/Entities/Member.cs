@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    internal class Member : GymUser
+    public class Member : GymUser
     {
         // JoinDate == CreatedAt from BaseEntity 
 
