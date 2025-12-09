@@ -1,4 +1,6 @@
 ﻿using Data_Access_Layer.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Data.Contexts
 {
-    public class GymSystemDBContext : DbContext
+    public class GymSystemDBContext : IdentityDbContext<ApplicationUser>
     {
         public GymSystemDBContext(DbContextOptions<GymSystemDBContext> options) : base(options)
         {
@@ -17,14 +19,24 @@ namespace Data_Access_Layer.Data.Contexts
         }
         
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //   optionsBuilder.UseSqlServer("Server=.;Database=GymSystemDB;Trusted_Connection=True;TrustServerCertificate=True;");
-        //}
-
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+           modelBuilder.Entity<ApplicationUser>(
+                  mb=>
+                  {
+                      mb.Property(e=>e.FirstName)
+                      .HasColumnType("varchar")
+                      .HasMaxLength(50);
+
+                      mb.Property(e=>e.LastName)
+                       .HasColumnType("varchar")
+                       .HasMaxLength(50);
+
+                  });
+        
         }
 
         #region DbSets
