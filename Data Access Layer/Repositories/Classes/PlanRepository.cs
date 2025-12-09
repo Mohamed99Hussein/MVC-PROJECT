@@ -20,19 +20,6 @@ namespace Data_Access_Layer.Repositories.Classes
         {
             context.Plans.Add(plan);
             return context.SaveChanges();
-
-        }
-
-        public int DeletePlan(int id)
-        {
-            var plan = context.Plans.Find(id);
-            if (plan != null)
-            {
-                context.Plans.Remove(plan);
-                return context.SaveChanges();
-            }
-            return 0;
-
         }
 
         public IEnumerable<Plan> GetAllPlans()

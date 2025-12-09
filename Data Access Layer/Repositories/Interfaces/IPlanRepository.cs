@@ -16,8 +16,6 @@ namespace Data_Access_Layer.Repositories.Interfaces
         //  Add Plan
         int AddPlan(Plan plan);
         //  Update Plan
-        int UpdatePlan(Plan plan);
-        //  Delete Plan
-        int DeletePlan(int id);
+      
     }
 }
