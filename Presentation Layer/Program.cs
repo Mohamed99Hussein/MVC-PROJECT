@@ -25,6 +25,7 @@ namespace Presentation_Layer
             //builder.Services.AddScoped<IPlanRepository,PlanRepository>();
             
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();   
+            builder.Services.AddScoped<ISessionRepository,SessionRepository>();
 
 
 
