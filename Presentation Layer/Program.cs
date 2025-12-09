@@ -1,4 +1,5 @@
 using Business_Logic_Layer.AutoMapper;
+using Business_Logic_Layer.Services.AccountService;
 using Business_Logic_Layer.Services.AnalyticsService.Class;
 using Business_Logic_Layer.Services.AnalyticsService.Interface;
 using Business_Logic_Layer.Services.AttachmentService;
@@ -19,6 +20,7 @@ using Data_Access_Layer.Unit_Of_Work.Class;
 using Data_Access_Layer.Unit_Of_Work.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Presentation_Layer.AttachmentService;
 
 namespace Presentation_Layer
 {
@@ -46,7 +48,8 @@ namespace Presentation_Layer
             builder.Services.AddScoped<ITrainerService,TrainerService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
-            builder.Services.AddScoped<IAttachmentService,AttachmentService>();
+            builder.Services.AddScoped<IAccountService,AccountService>();
+            builder.Services.AddScoped<IAttachmentService,Business_Logic_Layer.Services.AttachmentService.AttachmentService>();
             builder.Services.AddIdentity<ApplicationUser,IdentityRole>
                 (config => config.User.RequireUniqueEmail = true)
                    .AddEntityFrameworkStores<GymSystemDBContext>();
