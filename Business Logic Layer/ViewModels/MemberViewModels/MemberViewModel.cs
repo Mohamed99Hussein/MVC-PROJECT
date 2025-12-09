@@ -18,6 +18,16 @@ namespace Business_Logic_Layer.ViewModels.MemberViewModels
 
         public string Email { get; set; } = null!;
 
+        public string? PlanName { get; set; } 
+
+        public string? MemberShipStartDate { get; set; } 
+
+        public string? DateOfBirth { get; set; }
+        public string? MemberShipEndDate { get; set; } 
+
+
+
+
 
 
     }

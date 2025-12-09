@@ -19,6 +19,8 @@ namespace Presentation_Layer
             });
             builder.Services.AddScoped(typeof(IgenericRepository<>),typeof(GenericRepository<>));
 
+            builder.Services.AddScoped<IPlanRepository,PlanRepository>();   
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
