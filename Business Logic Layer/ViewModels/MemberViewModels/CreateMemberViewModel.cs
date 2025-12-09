@@ -1,4 +1,5 @@
 ﻿using Data_Access_Layer.Entities.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,9 @@ namespace Business_Logic_Layer.ViewModels.MemberViewModels
 {
     public class CreateMemberViewModel
     {
+        [Required(ErrorMessage = "Photo is Required")]
+        [Display(Name = "Profile Photo")]
+        public IFormFile FilePhoto { get; set; } = null!;
         [Required(ErrorMessage ="Name is Required")]
         [StringLength(50,MinimumLength =3,ErrorMessage ="Name must be between 3 and 50")]
         [RegularExpression(@"^[a-zA-Z\s]+$")]

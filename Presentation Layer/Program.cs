@@ -1,6 +1,7 @@
 using Business_Logic_Layer.AutoMapper;
 using Business_Logic_Layer.Services.AnalyticsService.Class;
 using Business_Logic_Layer.Services.AnalyticsService.Interface;
+using Business_Logic_Layer.Services.AttachmentService;
 using Business_Logic_Layer.Services.MemberService.Classes;
 using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.Services.PlanService.Class;
@@ -43,7 +44,7 @@ namespace Presentation_Layer
             builder.Services.AddScoped<ITrainerService,TrainerService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
-            
+            builder.Services.AddScoped<IAttachmentService,AttachmentService>();
 
             var app = builder.Build();
 
