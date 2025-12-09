@@ -47,6 +47,20 @@ namespace Presentation_Layer
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<IAttachmentService,AttachmentService>();
+            builder.Services.AddIdentity<ApplicationUser,IdentityRole>
+                (config => config.User.RequireUniqueEmail = true)
+                   .AddEntityFrameworkStores<GymSystemDBContext>();
+            builder.Services.ConfigureApplicationCookie(opt =>
+            {
+                opt.LoginPath = "/Account/Login";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
+            }  
+            );
+
+
+
+
+
 
             var app = builder.Build();
 

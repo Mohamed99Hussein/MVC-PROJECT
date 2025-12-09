@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data_Access_Layer.Data.Contexts
+namespace Data_Access_Layer.Data.DataSeeding
 {
     public static class IdentityDbContextSeeding
     {
