@@ -154,9 +154,14 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
             // Don't remove that has Active MemberShip
 
-            var HasActiveMemberSessions = unitOfWork.GetRepository<MemberSession>().GetAll(x=>x.MemberId == MemberId
-            && x.Session.StartTime < DateTime.Now).Any();
-            if (HasActiveMemberSessions) return false;
+            var SessionsId = unitOfWork.GetRepository<MemberSession>().GetAll(x=>x.MemberId == MemberId)
+                .Select(x=>x.MemberId);
+            
+            var FutureSessions = unitOfWork.GetRepository<Session>()
+                .GetAll(x=> SessionsId.Contains(x.Id) && x.StartTime < DateTime.Now).Any();
+
+
+            if (FutureSessions) return false;
 
             var DeletedMemberShips = unitOfWork.GetRepository<MemberShip>().GetAll(x=>x.MemberId== MemberId);
 
@@ -170,11 +175,12 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
                     }
                 }
-                unitOfWork.GetRepository<Member>().Delete(member);
-                return unitOfWork.SaveChanges() > 0;
+                        unitOfWork.GetRepository<Member>().Delete(member);
+                        return unitOfWork.SaveChanges() > 0;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Sorry I Can't Delete Member , {ex}");
                 return false;
             }
         }
