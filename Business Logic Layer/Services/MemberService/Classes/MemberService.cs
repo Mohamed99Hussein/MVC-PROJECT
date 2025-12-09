@@ -1,4 +1,5 @@
-﻿using Business_Logic_Layer.Services.MemberService.Interfaces;
+﻿using AutoMapper;
+using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Data_Access_Layer.Entities;
 using Data_Access_Layer.Repositories.Interfaces;
@@ -14,12 +15,12 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
     internal class MemberService : IMemberService
     {
         private readonly IUnitOfWork unitOfWork;
-       
+        private readonly IMapper mapper;
 
-        public MemberService(IUnitOfWork unitOfWork)
+        public MemberService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
-            
+            this.mapper = mapper;
         }
 
         public bool CreateMember(CreateMemberViewModel CreateMember)
@@ -30,29 +31,9 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
                 if (CheckEmail(CreateMember.Email) && CheckPhone(CreateMember.Phone))
                                             return false;
 
-                var Member = new Member()
-                {
-                    Email = CreateMember.Email,
-                    Phone = CreateMember.Phone,
-                    Gender = CreateMember.Gender,
-                    DateOfBirth = CreateMember.DateOfBirth,
-                    Address = new Addess
-                    {
-                        BuildingNumber = CreateMember.BuildingNumber,
-                        Street = CreateMember.Street,
-                        City = CreateMember.City,
-                    },
-                    HealthRecord = new HealthRecord
-                    {
-                        Height = CreateMember.HealthRecordViewModel.Height,
-                        Weight = CreateMember.HealthRecordViewModel.weight,
-                        BloodType = CreateMember.HealthRecordViewModel.BloodType,
-                        Note = CreateMember.HealthRecordViewModel.Note,
-                    }
+                var mappedMember = mapper.Map<CreateMemberViewModel, Member>(CreateMember);
 
-                };
-
-                unitOfWork.GetRepository<Member>().Add(Member);
+                unitOfWork.GetRepository<Member>().Add(mappedMember);
                 return unitOfWork.SaveChanges() > 0;
 
                 //return memberRepository.Add(Member) > 0;
@@ -93,19 +74,21 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             #endregion
 
             #region Second Way of Manual Mapping
-            var MemberViewModels = Members.Select(M => new MemberViewModel
-            {
-                Id = M.Id,
-                Name = M.Name,
-                Phone = M.Phone,
-                Email = M.Email,
-                Gender = M.Gender.ToString(),
-                Photo = M.Photo,
+            //var MemberViewModels = Members.Select(M => new MemberViewModel
+            //{
+            //    Id = M.Id,
+            //    Name = M.Name,
+            //    Phone = M.Phone,
+            //    Email = M.Email,
+            //    Gender = M.Gender.ToString(),
+            //    Photo = M.Photo,
 
-            });
+            //});
 
             #endregion
-            
+
+                var MemberViewModels = mapper.Map<IEnumerable<Member>, IEnumerable<MemberViewModel>>(Members);
+
             return MemberViewModels;
 
         }
@@ -116,16 +99,10 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             var HealthRecord = unitOfWork.GetRepository<HealthRecord>().GetById(MemberId);
             if (HealthRecord == null) return null;
 
-            return new HealthRecordViewModel()   
-            { 
-                Height = HealthRecord.Height,
-                weight = HealthRecord.Weight,
-                BloodType = HealthRecord.BloodType,
-                Note = HealthRecord.Note,
-            };
+            var mappedHealthRecord = mapper.Map<HealthRecord, HealthRecordViewModel>(HealthRecord);
+            return mappedHealthRecord;
 
-             
-
+        
         }
 
         public MemberViewModel? GetMemberDetails(int MemberId)
@@ -135,15 +112,8 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             if(Member is not null)
 
            {
-                var memberViewModel = new MemberViewModel
-                {
-                    Name = Member.Name,
-                    Phone = Member.Phone,
-                    Email = Member.Email,
-                    Gender = Member.Gender.ToString(),
-                    Photo = Member.Photo,
-                    DateOfBirth = Member.DateOfBirth.ToShortDateString(),
-                };
+               
+                var memberViewModel = mapper.Map<Member, MemberViewModel>(Member);
 
                 var MemberShipActive = unitOfWork.GetRepository<MemberShip>().GetAll(x => x.Id == MemberId&& x.Status=="Active")
                     .FirstOrDefault();
@@ -171,17 +141,8 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             var TargetMember = unitOfWork.GetRepository<Member>().GetById(MemberId);
 
             if (TargetMember is  null) return null;
-
-            return new MemberToUpdateViewModel()
-            {
-                Name = TargetMember.Name,
-                Phone = TargetMember.Phone,
-                Email = TargetMember.Email,
-                BuildingNumber = TargetMember.Address.BuildingNumber,
-                City = TargetMember.Address.City,
-                Street = TargetMember.Address.Street,
-                Photo = TargetMember.Photo
-            };
+       var mappedMemberToUpdate = mapper.Map<Member, MemberToUpdateViewModel>(TargetMember);
+            return mappedMemberToUpdate;
 
         }
 
@@ -217,7 +178,7 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             }
         }
 
-        public bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember)
+        public bool UpdateMemberDetails(int MemberId, MemberToUpdateViewModel UpdatedMember)     
         {
            
             if (CheckEmail(UpdatedMember.Email) || CheckPhone(UpdatedMember.Phone))
@@ -227,14 +188,8 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
 
             if (member is null) return false;
 
-            member.Email = UpdatedMember.Email;
-            member.Phone = UpdatedMember.Phone;
-            member.Address.BuildingNumber = UpdatedMember.BuildingNumber;
-            member.Address.City = UpdatedMember.City;
-            member.Address.Street = UpdatedMember.Street;
-            member.UpdatedAt = DateTime.Now;
-
-             unitOfWork.GetRepository<Member>().Update(member) ;
+            mapper.Map(UpdatedMember, member);
+            unitOfWork.GetRepository<Member>().Update(member) ;
             return unitOfWork.SaveChanges() > 0;
 
         }
