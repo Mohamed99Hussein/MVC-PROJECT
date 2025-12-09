@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation_Layer.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IAnalyticsService analyticsService;
