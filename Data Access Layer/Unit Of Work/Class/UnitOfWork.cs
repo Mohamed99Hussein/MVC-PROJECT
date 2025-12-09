@@ -16,15 +16,17 @@ namespace Data_Access_Layer.Unit_Of_Work.Class
         private readonly GymSystemDBContext dbContext;
         
 
-        public UnitOfWork(GymSystemDBContext dBContext,ISessionRepository SessionRepository)
+        public UnitOfWork(GymSystemDBContext dBContext,ISessionRepository SessionRepository,IMembershipRepository _membershipRepository)
         {
             this.dbContext = dBContext;
             sessionRepository = SessionRepository;
+            MembershipRepository = _membershipRepository;
         }
 
         private readonly Dictionary<Type,object> Repositories = new();
 
         public ISessionRepository sessionRepository { get; }
+        public IMembershipRepository MembershipRepository { get;}
 
         public IgenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new()
         {

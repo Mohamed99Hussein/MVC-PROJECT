@@ -5,6 +5,8 @@ using Business_Logic_Layer.Services.AnalyticsService.Interface;
 using Business_Logic_Layer.Services.AttachmentService;
 using Business_Logic_Layer.Services.MemberService.Classes;
 using Business_Logic_Layer.Services.MemberService.Interfaces;
+using Business_Logic_Layer.Services.MembershipService.Class;
+using Business_Logic_Layer.Services.MembershipService.Interface;
 using Business_Logic_Layer.Services.PlanService.Class;
 using Business_Logic_Layer.Services.PlanService.Interface;
 using Business_Logic_Layer.Services.SessionService.Class;
@@ -59,6 +61,9 @@ namespace Presentation_Layer
                 opt.AccessDeniedPath = "/Account/AccessDenied";
             }  
             );
+
+            builder.Services.AddScoped<IMembershipRepository,MembershipRepository>();
+            builder.Services.AddScoped<IMembershipService,MembershipService>();
 
 
 
