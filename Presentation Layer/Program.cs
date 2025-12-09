@@ -5,6 +5,8 @@ using Business_Logic_Layer.Services.MemberService.Classes;
 using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.Services.PlanService.Class;
 using Business_Logic_Layer.Services.PlanService.Interface;
+using Business_Logic_Layer.Services.SessionService.Class;
+using Business_Logic_Layer.Services.SessionService.Interface;
 using Business_Logic_Layer.Services.TranierService.Class;
 using Business_Logic_Layer.Services.TranierService.Interface;
 using Data_Access_Layer.Data.Contexts;
@@ -40,6 +42,7 @@ namespace Presentation_Layer
             builder.Services.AddScoped<IMemberService,MemberService>();
             builder.Services.AddScoped<ITrainerService,TrainerService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
 
             var app = builder.Build();
 
