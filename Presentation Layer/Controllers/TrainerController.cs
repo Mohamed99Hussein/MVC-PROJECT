@@ -1,4 +1,5 @@
 ﻿using Business_Logic_Layer.Services.MemberService.Classes;
+using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.Services.TranierService.Interface;
 using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Business_Logic_Layer.ViewModels.TrainerViewModels;
@@ -120,8 +121,45 @@ namespace Presentation_Layer.Controllers
             }
 
 
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Trainer Id, Can not be less than 1";
 
+                return RedirectToAction(nameof(Index));
+            }
 
+            var Trainer = trainerService.GetTrainerDetails(id);
+
+            if (Trainer == null)
+            {
+                TempData["ErrorMessage"] = "Sorry, Trainer Not Found.";
+
+                return View(nameof(Index));
+            }
+
+            ViewBag.TrainerId = Trainer.Id;
+            return View();
+
+        }
+
+        [HttpPost]
+        public ActionResult DeleteConfirmed([FromForm] int id)
+        {
+           
+              var Result = trainerService.DeleteTrainer(id);
+
+                if (Result)
+                    TempData["SuccessMessage"] = "Member Deleted Successfully.";
+                else
+                {
+                    TempData["ErrorMessage"] = "Sorry, Member Failed to be Deleted.";
+                }
+
+                return RedirectToAction(nameof(Index));
+            
+        }
 
 
 
