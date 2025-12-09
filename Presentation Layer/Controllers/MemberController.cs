@@ -11,21 +11,32 @@ namespace Presentation_Layer.Controllers
         {
             this.memberService = memberService;
         }
+
         public ActionResult Index()
         {
             var Data = memberService.GetAllMembers();
-            return View(Data);
+           
+                     return View(Data);
         }
 
         public ActionResult MemberDetails(int id)
         {
             if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id, Can not be less than 1";
+
                 return View(nameof(Index));
+            }
+               
 
             var MemberDetails = memberService.GetMemberDetails(id);
            
             if(MemberDetails is null)
-                return View(nameof(Index));
+            {
+                TempData["ErrorMessage"] = "Member Not Found";
+                        return View(nameof(Index));
+            }
+                
 
             return View(MemberDetails);
 
@@ -34,12 +45,25 @@ namespace Presentation_Layer.Controllers
         public ActionResult HealthRecordDetails(int id)
         {
             if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id, Can not be less than 1";
                 return View(nameof(Index));
+            }
+               
             var HealthRecordDetails = memberService.GetHealthRecord(id);
             if (HealthRecordDetails is null)
+            {
+                TempData["ErrorMessage"] = "Health Record of Member Not Found";
                 return View(nameof(Index));
+            }
+               
             return View(HealthRecordDetails);
         }
+
+
+
+
+
 
     }
 }
