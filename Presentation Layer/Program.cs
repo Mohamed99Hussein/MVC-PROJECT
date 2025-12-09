@@ -83,6 +83,8 @@ namespace Presentation_Layer
             GymDBContextSeedData.SeedData(DbContext);
             IdentityDbContextSeeding.SeedData(roleManager,userManager);
 
+
+
             #endregion
 
             // Configure the HTTP request pipeline.
@@ -95,7 +97,7 @@ namespace Presentation_Layer
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
@@ -103,7 +105,7 @@ namespace Presentation_Layer
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
-
+            
             app.Run();
         }
     }

@@ -3,11 +3,13 @@ using Business_Logic_Layer.Services.MemberService.Interfaces;
 using Business_Logic_Layer.Services.TranierService.Interface;
 using Business_Logic_Layer.ViewModels.MemberViewModels;
 using Business_Logic_Layer.ViewModels.TrainerViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Presentation_Layer.Controllers
 {
+    [Authorize(Roles ="SuperAdmin")]
     public class TrainerController : Controller
     {
         private readonly ITrainerService trainerService;

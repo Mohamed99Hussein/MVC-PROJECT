@@ -26,7 +26,7 @@ namespace Business_Logic_Layer.Services.AccountService
                 var CheckPassword = userManager.CheckPasswordAsync(user, loginViewModel.Password).Result;   
         
                 if(!CheckPassword) return null;
-
+ 
                 return user;
         
         
