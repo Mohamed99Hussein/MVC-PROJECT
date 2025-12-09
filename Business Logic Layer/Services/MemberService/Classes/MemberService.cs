@@ -15,14 +15,17 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
         private readonly IgenericRepository<Member> memberRepository;
         private readonly IgenericRepository<MemberShip> memberShipRepository;
         private readonly IPlanRepository planRepository;
+        private readonly IgenericRepository<HealthRecord> healthRecordRepository;
 
         public MemberService(IgenericRepository<Member> memberRepository,
             IgenericRepository<MemberShip> memberShipRepository,
-            IPlanRepository planRepository)
+            IPlanRepository planRepository,
+            IgenericRepository<HealthRecord> healthRecordRepository)
         {
             this.memberRepository = memberRepository;
             this.memberShipRepository = memberShipRepository;
             this.planRepository = planRepository;
+            this.healthRecordRepository = healthRecordRepository;
         }
 
         public bool CreateMember(CreateMemberViewModel CreateMember)
@@ -108,6 +111,24 @@ namespace Business_Logic_Layer.Services.MemberService.Classes
             #endregion
             
             return MemberViewModels;
+
+        }
+
+        public HealthRecordViewModel? GetHealthRecord(int MemberId)
+        {
+           
+            var HealthRecord = healthRecordRepository.GetById(MemberId);
+            if (HealthRecord == null) return null;
+
+            return new HealthRecordViewModel()   
+            { 
+                Height = HealthRecord.Height,
+                weight = HealthRecord.Weight,
+                BloodType = HealthRecord.BloodType,
+                Note = HealthRecord.Note,
+            };
+
+             
 
         }
 
